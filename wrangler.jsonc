@@ -1,0 +1,12 @@
+// Site vitrine publié par Cloudflare Workers (fichiers statiques, offre gratuite).
+// `npm run build` produit « dist » ; `npx wrangler deploy` le publie.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "naellys-express-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

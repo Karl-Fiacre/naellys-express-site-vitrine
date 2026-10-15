@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import Icone from '../components/Icone.astro';
+import Formulaire from '../components/Formulaire.astro';
+import { COMMUNES } from '../data/site';
+---
+
+<Base titre="Devenir livreur" description="Rejoignez les coursiers NAËLLYS EXPRESS à Abidjan : salarié ou indépendant, courses assignées par l'équipe, gains suivis dans l'application et paiement quotidien sur Wave.">
+  <EntetePage surtitre="Recrutement" titre="Roulez avec<br /><span class='accent'>NAËLLYS EXPRESS.</span>" chapeau="Salarié ou indépendant, rejoignez une équipe de coursiers vérifiés, avec une application pensée pour vous : courses assignées, navigation, gains et paiements suivis au jour le jour." />
+
+  <section class="section">
+    <div class="conteneur grille trois remontee">
+      {[
+        ['portefeuille', 'Payé chaque jour', 'Indépendant : vos gains versés chaque jour sur votre compte Wave, après la commission NAËLLYS EXPRESS.'],
+        ['telephone', 'Tout dans l’app', 'Disponibilité en un geste, navigation, code du destinataire et historique de vos gains.'],
+        ['etoile', 'Primes de fidélité', 'Ancienneté, nombre de livraisons et note des clients ouvrent droit à des primes.'],
+      ].map(([icone, titre, texte], i) => (
+        <div class="carte" data-reveal data-incliner style={`--delai:${i * 120}ms`}>
+          <span class="icone-disque"><Icone nom={icone} /></span>
+          <h3>{titre}</h3>
+          <p>{texte}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section sombre">
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <div class="conteneur deux-colonnes">
+      <div>
+        <p class="surtitre" data-reveal>Ce qu’il faut</p>
+        <h2 data-reveal style="--delai:60ms">Les conditions pour nous rejoindre.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">Votre identité et vos documents sont vérifiés par notre équipe avant votre première course : c’est la garantie de confiance que nous offrons à nos clients.</p>
+      </div>
+      <ul class="atouts" data-reveal="droite" style="color:#fff">
+        <li>Être majeur et disposer d’un smartphone</li>
+        <li>Un permis de conduire valide</li>
+        <li>Indépendant : votre propre moto, avec sa carte de vignette et son assurance</li>
+        <li>Une pièce d’identité et un selfie pris dans l’application</li>
+        <li>Indépendant : un compte Wave pour vos paiements</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="candidature">
+    <div class="conteneur deux-colonnes" style="align-items:start">
+      <div>
+        <p class="surtitre" data-reveal>Candidature</p>
+        <h2 data-reveal style="--delai:60ms">Envoyez votre candidature.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">Notre équipe étudie chaque candidature et vous rappelle pour un entretien. Aucun document n’est demandé ici : ils se déposent ensuite dans l’application, en toute sécurité.</p>
+      </div>
+      <div data-reveal="droite">
+        <Formulaire
+          type="livreur"
+          titre="Votre profil de coursier"
+          envoi="Envoyer ma candidature"
+          succes="Merci ! Votre candidature est bien arrivée. Notre équipe vous rappelle pour un entretien."
+          etapes={[
+            { titre: 'Profil', champs: [
+              { nom: 'nom', libelle: 'Nom et prénoms', type: 'text', requis: true },
+              { nom: 'telephone', libelle: 'Téléphone', type: 'tel', requis: true },
+              { nom: 'commune', libelle: 'Commune de résidence', type: 'select', options: [...COMMUNES.map((c) => c.nom), 'Autre'], requis: true },
+              { nom: 'statut', libelle: 'Je souhaite être', type: 'choix', requis: true, options: ['Salarié', 'Indépendant', 'Les deux me conviennent'] },
+            ] },
+            { titre: 'Expérience', champs: [
+              { nom: 'moto', libelle: 'Avez-vous votre propre moto ?', type: 'choix', requis: true, options: ['Oui, avec ses papiers', 'Oui, papiers en cours', 'Non'] },
+              { nom: 'permis', libelle: 'Permis de conduire', type: 'choix', requis: true, options: ['Oui, valide', 'Non'] },
+              { nom: 'experience', libelle: 'Expérience de livraison', type: 'choix', options: ['Débutant', 'Moins d’un an', 'Plus d’un an'] },
+              { nom: 'message', libelle: 'Un mot sur vous (facultatif)', type: 'textarea' },
+            ] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>

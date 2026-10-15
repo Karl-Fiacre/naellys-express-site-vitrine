@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import { COMMUNES, OFFRES_ENTREPRISES, OFFRES_PARTICULIERS } from '../data/site';
+const fcfa = (n: number) => `${n.toLocaleString('fr-FR').replace(/ /g, ' ')} FCFA`;
+---
+
+<Base titre="Tarifs" description="Tarifs NAËLLYS EXPRESS : 2 000 FCFA la course avec l'offre B2C, tarif par commune de 1 500 à 2 500 FCFA, formules entreprise Standard et Premium avec facture FNE.">
+  <EntetePage surtitre="Tarifs" titre="Des prix clairs,<br /><span class='accent'>affichés avant de commander.</span>" chapeau="Le prix de chaque course s’affiche dans l’application avant votre confirmation. Pas de frais cachés." />
+
+  <section class="section">
+    <div class="conteneur">
+      <div class="grille quatre remontee resume">
+        {[...OFFRES_PARTICULIERS.map((o) => ({ nom: o.nom, prix: `${o.prix} F`, detail: o.unite.replace('FCFA ', ''), public: 'Particuliers' })),
+          ...OFFRES_ENTREPRISES.map((o) => ({ nom: o.nom, prix: o.prix, detail: o.unite, public: 'Entreprises' }))].map((o, i) => (
+          <div class="carte" data-reveal data-incliner style={`--delai:${i * 90}ms`}>
+            <small>{o.public}</small>
+            <h3>{o.nom}</h3>
+            <p class="gros">{o.prix}</p>
+            <p>{o.detail}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="conteneur deux-colonnes" style="align-items:start">
+      <div>
+        <p class="surtitre" data-reveal>Sans offre</p>
+        <h2 data-reveal style="--delai:60ms">Le tarif selon la commune de livraison.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">Sans offre choisie, la course est facturée selon la commune où le colis est livré. Avec l’offre B2C, c’est 2 000 FCFA partout.</p>
+        <p class="chapeau" data-reveal style="--delai:180ms">Livraison le soir même après 17 h : une majoration express peut s’appliquer, indiquée avant la confirmation.</p>
+      </div>
+      <div data-reveal="droite">
+        <table class="tableau">
+          <thead><tr><th scope="col">Commune de livraison</th><th scope="col">Tarif</th></tr></thead>
+          <tbody>{COMMUNES.map((c) => <tr><td>{c.nom}</td><td class="montant">{fcfa(c.tarif)}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sombre">
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <div class="conteneur">
+      <p class="surtitre" data-reveal>Entreprises</p>
+      <h2 data-reveal style="--delai:60ms">Au-delà des courses incluses.</h2>
+      <div class="grille deux" style="margin-top:36px">
+        {OFFRES_ENTREPRISES.map((o, i) => (
+          <div class="ligne" data-reveal style={`--delai:${i * 120}ms`}>
+            <h3>Formule {o.nom}</h3>
+            <p><strong>{o.prix}</strong> {o.unite}, puis {o.depassement}.</p>
+            <p>{o.atouts[0]}.</p>
+          </div>
+        ))}
+      </div>
+      <a class="bouton" href="/entreprises/#demande" style="margin-top:34px">Demander une formule <span class="fleche" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .resume small { font-weight: 700; color: var(--orange); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.75rem; }
+  .resume h3 { margin: 6px 0 0; }
+  .gros { font-family: var(--font-titre); font-weight: 800; color: var(--navy); font-size: 2.6rem; line-height: 1; margin: 14px 0 6px; }
+  .resume p:last-child { color: var(--muted); margin: 0; }
+  .ligne { padding: 28px; border-radius: 26px; background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1); }
+  .ligne strong { color: var(--orange); font-family: var(--font-titre); }
+  .ligne p:last-child { margin: 0; }
+</style>

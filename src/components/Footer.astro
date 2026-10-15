@@ -1,0 +1,86 @@
+---
+import { SOCIETE } from '../data/site';
+const annee = new Date().getFullYear();
+---
+
+<footer class="pied">
+  <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+
+  <div class="conteneur appel-final" data-reveal>
+    <p class="surtitre">Prêt à envoyer ?</p>
+    <h2>Votre prochain colis part<br /><span class="texte-degrade">dans quelques minutes.</span></h2>
+    <div class="boutons">
+      <a class="bouton" href="/contact/">Parler à l’équipe <span class="fleche" aria-hidden="true">→</span></a>
+      <a class="bouton secondaire" href={`https://wa.me/${SOCIETE.whatsapp}`} target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="conteneur colonnes">
+    <div class="identite">
+      <a href="/" class="marque" aria-label="Accueil">
+        <img src="/images/logo.png" alt="NAËLLYS EXPRESS" width="190" height="147" loading="lazy" />
+      </a>
+      <p>Livraison de colis à moto dans tout Abidjan. Coursiers vérifiés, suivi en direct, remise sécurisée par code.</p>
+      <p class="slogan">{SOCIETE.slogan}</p>
+    </div>
+    <nav aria-label="Services">
+      <h3>Services</h3>
+      <a href="/particuliers/">Particuliers</a>
+      <a href="/entreprises/">Entreprises</a>
+      <a href="/partenaires/">Partenaires</a>
+      <a href="/tarifs/">Tarifs</a>
+    </nav>
+    <nav aria-label="NAËLLYS EXPRESS">
+      <h3>NAËLLYS EXPRESS</h3>
+      <a href="/devenir-livreur/">Devenir livreur</a>
+      <a href="/faq/">Questions fréquentes</a>
+      <a href="/contact/">Contact</a>
+      <a href="/mentions-legales/">Mentions légales</a>
+      <a href={`${SOCIETE.backOffice}/confidentialite`}>Confidentialité</a>
+    </nav>
+    <div class="contact">
+      <h3>Nous joindre</h3>
+      <a href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a>
+      <a href={`mailto:${SOCIETE.email}`}>{SOCIETE.email}</a>
+      <p>{SOCIETE.siege}</p>
+    </div>
+  </div>
+
+  <div class="conteneur bas">
+    <p>© {annee} {SOCIETE.nom} — {SOCIETE.forme} au capital de {SOCIETE.capital} · RCCM {SOCIETE.rccm} · CC {SOCIETE.contribuable}</p>
+    <button type="button" class="haut" data-haut aria-label="Revenir en haut de la page">↑</button>
+  </div>
+  <div class="signature" aria-hidden="true">NAËLLYS</div>
+</footer>
+
+<style>
+  .pied { position: relative; background: var(--navy-deep); color: var(--on-navy-muted); overflow: hidden; padding-top: clamp(80px, 10vw, 130px); }
+  .pied .raies .epaisse { top: 6%; }
+  .pied .raies .fine { top: calc(6% + 56px); }
+  .appel-final { position: relative; padding-bottom: clamp(60px, 8vw, 100px); border-bottom: 1px solid rgb(255 255 255 / 0.08); }
+  .appel-final h2 { color: #fff; font-size: clamp(2.1rem, 5vw, 3.8rem); max-width: 18ch; }
+  .boutons { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+  .bouton.secondaire { color: #fff; box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.4); }
+  .colonnes { position: relative; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 40px; padding-block: 64px; }
+  .identite img { width: 170px; height: auto; background: #fff; border-radius: 20px; padding: 10px 14px; margin-bottom: 18px; }
+  .identite p { max-width: 36ch; }
+  .slogan { font-family: var(--font-titre); font-weight: 700; color: var(--orange); }
+  .pied h3 { color: #fff; font-size: 0.95rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+  .pied nav, .contact { display: flex; flex-direction: column; gap: 10px; }
+  .pied nav a, .contact a { color: var(--on-navy-muted); text-decoration: none; width: fit-content; background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 2px no-repeat; transition: color 0.3s, background-size 0.4s var(--courbe); }
+  .pied nav a:hover, .contact a:hover { color: #fff; background-size: 100% 2px; }
+  .bas { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-block: 24px; border-top: 1px solid rgb(255 255 255 / 0.08); font-size: 0.85rem; }
+  .bas p { margin: 0; }
+  .haut { width: 48px; height: 48px; flex: none; border-radius: 50%; border: 0; background: var(--orange); color: #fff; font-size: 1.2rem; cursor: pointer; transition: transform 0.4s var(--courbe); }
+  .haut:hover { transform: translateY(-4px); }
+  .signature { font-family: var(--font-titre); font-weight: 800; font-size: clamp(5rem, 22vw, 20rem); line-height: 0.75; letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 1px rgb(255 255 255 / 0.08); text-align: center; user-select: none; margin-top: 10px; transform: translateY(12%); }
+  @media (max-width: 900px) { .colonnes { grid-template-columns: 1fr 1fr; } .identite { grid-column: 1 / -1; } }
+  @media (max-width: 560px) { .colonnes { grid-template-columns: 1fr; } .bas { flex-direction: column-reverse; align-items: flex-start; } }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const haut = document.querySelector<HTMLButtonElement>('[data-haut]');
+    if (haut) haut.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

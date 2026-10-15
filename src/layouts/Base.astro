@@ -1,0 +1,91 @@
+---
+// Mise en page commune : métadonnées, transitions entre pages (Astro ClientRouter, API View
+// Transitions du navigateur), en-tête, pied de page, bouton WhatsApp, barre de progression.
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsApp from '../components/WhatsApp.astro';
+import { SOCIETE } from '../data/site';
+
+interface Props {
+  titre: string;
+  description: string;
+}
+const { titre, description } = Astro.props;
+const titreComplet = titre === SOCIETE.nom ? `${SOCIETE.nom} — Livraison de colis à moto à Abidjan` : `${titre} — ${SOCIETE.nom}`;
+const canonique = new URL(Astro.url.pathname, Astro.site);
+const donneesStructurees = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: SOCIETE.nom,
+  description: 'Livraison de colis à moto dans tout Abidjan.',
+  url: 'https://naellys-express.com',
+  telephone: SOCIETE.telephoneE164,
+  email: SOCIETE.email,
+  image: 'https://naellys-express.com/images/logo.png',
+  address: { '@type': 'PostalAddress', streetAddress: 'Yopougon Sable', addressLocality: 'Abidjan', addressCountry: 'CI' },
+  areaServed: 'Abidjan',
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titreComplet}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonique} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#1b2a4a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_CI" />
+    <meta property="og:site_name" content={SOCIETE.nom} />
+    <meta property="og:title" content={titreComplet} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://naellys-express.com/images/coursier.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(donneesStructurees)} />
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <a class="evitement" href="#contenu">Aller au contenu</a>
+    <div class="progression" data-progression aria-hidden="true"></div>
+    <Header />
+    <main id="contenu" transition:animate="none">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsApp />
+    <div class="rideau" aria-hidden="true" transition:persist="rideau" data-rideau><span></span></div>
+    <script>
+      import '../scripts/animations';
+      import '../scripts/rideau';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .evitement { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--orange); color: #fff; padding: 10px 16px; border-radius: 10px; text-decoration: none; transition: top 0.3s; }
+  .evitement:focus { top: 12px; }
+  .progression { position: fixed; inset: 0 0 auto; height: 3px; z-index: 60; background: linear-gradient(90deg, var(--orange), #ffb37f); transform-origin: left; transform: scaleX(0); }
+
+  /* Transition entre les pages (scripts/rideau.ts) : un rideau orange et navy couvre l'écran en
+     diagonale pendant le chargement, puis se retire en découvrant la nouvelle page. */
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  .rideau { position: fixed; inset: 0; z-index: 90; pointer-events: none; visibility: hidden; }
+  .rideau span { position: absolute; inset: -10% -30%; background: linear-gradient(115deg, var(--orange) 0 48%, var(--navy) 48% 100%); transform: translateX(-110%) skewX(-18deg); }
+  .rideau.couvre, .rideau.decouvre { visibility: visible; }
+  .rideau.couvre span { animation: couvrir 0.42s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+  .rideau.decouvre span { animation: decouvrir 0.62s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+  @keyframes couvrir { from { transform: translateX(-110%) skewX(-18deg); } to { transform: translateX(0) skewX(-18deg); } }
+  @keyframes decouvrir { from { transform: translateX(0) skewX(-18deg); } to { transform: translateX(110%) skewX(-18deg); } }
+  main { animation: monter 0.8s var(--courbe) both; }
+  @keyframes monter { from { opacity: 0; transform: translateY(18px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rideau { display: none !important; }
+    main { animation: none; }
+  }
+</style>

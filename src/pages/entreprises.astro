@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import Icone from '../components/Icone.astro';
+import Formulaire from '../components/Formulaire.astro';
+import { COMMUNES, OFFRES_ENTREPRISES } from '../data/site';
+---
+
+<Base titre="Entreprises" description="Formules Standard et Premium pour les entreprises d'Abidjan : courses incluses chaque mois, coursiers salariés en priorité, facture normalisée électronique (FNE).">
+  <EntetePage surtitre="Entreprises" titre="La logistique du dernier<br />kilomètre, <span class='accent'>sans y penser.</span>" chapeau="Des courses incluses chaque mois, des coursiers salariés en priorité, un tableau de bord et la facture normalisée électronique : votre service de livraison, clé en main." />
+
+  <section class="section">
+    <div class="conteneur">
+      <div class="grille deux remontee">
+        {OFFRES_ENTREPRISES.map((o, i) => (
+          <article class={`carte offre ${o.vedette ? 'vedette' : ''}`} data-reveal data-incliner style={`--delai:${i * 120}ms`}>
+            {o.vedette && <span class="etiquette">FNE dès la 1<sup>re</sup> livraison</span>}
+            <h3>Formule {o.nom}</h3>
+            <p class="prix">{o.prix}</p>
+            <p class="unite">{o.unite}</p>
+            <p class="note">{o.depassement}</p>
+            <ul class="atouts">{o.atouts.map((a) => <li>{a}</li>)}</ul>
+            <a class={`bouton ${o.vedette ? '' : 'navy'}`} href="#demande">Demander la formule {o.nom} <span class="fleche" aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+      <p class="chapeau" data-reveal style="margin-top:24px">Le prix de l’abonnement mensuel vous est communiqué avec le contrat. Chaque formule est validée par notre équipe, puis votre contrat s’approuve en ligne, dans l’application.</p>
+    </div>
+  </section>
+
+  <section class="section sombre">
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <div class="conteneur">
+      <p class="surtitre" data-reveal>Pourquoi nous</p>
+      <h2 data-reveal style="--delai:60ms">Pensé pour les équipes<br />qui livrent tous les jours.</h2>
+      <div class="grille quatre" style="margin-top:44px">
+        {[
+          ['facture', 'Facture FNE', 'Une facture normalisée électronique chaque mois, selon votre formule.'],
+          ['moto', 'Coursiers salariés', 'Vos commandes passent en priorité à nos coursiers salariés.'],
+          ['suivi', 'Suivi en direct', 'Chaque livraison suivie étape par étape, avec preuve de remise.'],
+          ['entreprise', 'Tableau de bord', 'Vos courses du mois, le reste inclus et l’historique, en un coup d’œil.'],
+        ].map(([icone, titre, texte], i) => (
+          <div class="avantage" data-reveal style={`--delai:${i * 100}ms`}>
+            <span class="icone-disque"><Icone nom={icone} /></span>
+            <h3>{titre}</h3>
+            <p>{texte}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="demande">
+    <div class="conteneur deux-colonnes" style="align-items:start">
+      <div>
+        <p class="surtitre" data-reveal>Demande de formule</p>
+        <h2 data-reveal style="--delai:60ms">Parlons de vos livraisons.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">Dites-nous en quelques mots ce que vous livrez : un conseiller vous rappelle pour vous proposer la formule adaptée et vous accompagner jusqu’au premier colis.</p>
+        <ul class="atouts" data-reveal style="--delai:180ms">
+          <li>{COMMUNES.length} communes desservies</li>
+          <li>Coursiers salariés en priorité</li>
+          <li>Contrat signé en ligne, dans l’application</li>
+        </ul>
+      </div>
+      <div data-reveal="droite">
+        <Formulaire
+          type="entreprise"
+          titre="Votre entreprise"
+          envoi="Envoyer ma demande"
+          succes="Merci ! Un conseiller NAËLLYS EXPRESS vous rappelle très vite pour vous présenter la formule adaptée."
+          etapes={[
+            { titre: 'Entreprise', champs: [
+              { nom: 'entreprise', libelle: 'Nom de l’entreprise', type: 'text', requis: true },
+              { nom: 'secteur', libelle: 'Secteur d’activité', type: 'select', options: ['Commerce', 'E-commerce', 'Restauration', 'Pharmacie et santé', 'Services', 'Administration', 'Autre'], requis: true },
+              { nom: 'volume', libelle: 'Livraisons par mois', type: 'choix', requis: true, options: ['Moins de 15', '15 à 35', 'Plus de 35'] },
+              { nom: 'formule', libelle: 'Formule envisagée', type: 'choix', options: ['Standard', 'Premium', 'Je ne sais pas encore'] },
+            ] },
+            { titre: 'Contact', champs: [
+              { nom: 'nom', libelle: 'Nom et prénoms', type: 'text', requis: true },
+              { nom: 'fonction', libelle: 'Fonction', type: 'text' },
+              { nom: 'telephone', libelle: 'Téléphone', type: 'tel', requis: true },
+              { nom: 'email', libelle: 'Email professionnel', type: 'email' },
+              { nom: 'message', libelle: 'Votre besoin (facultatif)', type: 'textarea' },
+            ] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .avantage { padding: 28px; border-radius: 26px; background: rgb(255 255 255 / 0.04); border: 1px solid rgb(255 255 255 / 0.09); transition: transform 0.5s var(--courbe), background 0.5s; }
+  .avantage:hover { transform: translateY(-6px); background: rgb(255 255 255 / 0.07); }
+  .avantage .icone-disque { background: rgb(232 114 44 / 0.16); }
+  .avantage p { margin: 0; }
+</style>

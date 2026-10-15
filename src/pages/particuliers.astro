@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import Icone from '../components/Icone.astro';
+import Telechargement from '../components/Telechargement.astro';
+import { OFFRES_PARTICULIERS } from '../data/site';
+---
+
+<Base titre="Particuliers" description="Envoyez un colis partout dans Abidjan à moto : 2 000 FCFA la course avec l'offre B2C, coursier vérifié, suivi en direct et remise sécurisée par code.">
+  <EntetePage surtitre="Particuliers" titre="Un colis à envoyer ?<br />On s’en charge." chapeau="Un document, un cadeau, un repas, un achat en ligne : un coursier vérifié le récupère et le remet en main propre, partout dans Abidjan.">
+    <div class="boutons-entete" data-reveal style="--delai:240ms">
+      <a class="bouton" href="/contact/" data-aimant>Envoyer un colis <span class="fleche" aria-hidden="true">→</span></a>
+      <a class="bouton secondaire" href="/tarifs/">Voir les tarifs</a>
+    </div>
+  </EntetePage>
+
+  <section class="section">
+    <div class="conteneur grille trois remontee">
+      {[
+        ['carte', 'Le point sur la carte suffit', 'Placez la collecte et la livraison sur la carte : l’adresse écrite devient facultative.'],
+        ['horloge', 'Le créneau qui vous arrange', 'Matin, après-midi ou soir, aujourd’hui ou plus tard. Pour le jour même, seuls les créneaux encore possibles sont proposés.'],
+        ['colis', 'Chez vous ou chez un proche', 'Faites récupérer le colis chez un expéditeur, et livrer la personne de votre choix.'],
+      ].map(([icone, titre, texte], i) => (
+        <div class="carte" data-reveal style={`--delai:${i * 120}ms`}>
+          <span class="icone-disque"><Icone nom={icone} /></span>
+          <h3>{titre}</h3>
+          <p>{texte}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="conteneur">
+      <p class="surtitre" data-reveal>Nos offres</p>
+      <h2 data-reveal style="--delai:60ms">Sans abonnement, sans surprise.</h2>
+      <div class="grille deux" style="margin-top:40px">
+        {OFFRES_PARTICULIERS.map((o, i) => (
+          <article class={`carte offre ${o.vedette ? 'vedette' : ''}`} data-reveal data-incliner style={`--delai:${i * 120}ms`}>
+            {o.vedette && <span class="etiquette">Le plus choisi</span>}
+            <h3>{o.nom}</h3>
+            <p class="prix">{o.prix}</p>
+            <p class="unite">{o.unite}</p>
+            <p class="note">{o.resume}</p>
+            <ul class="atouts">{o.atouts.map((a) => <li>{a}</li>)}</ul>
+            <a class={`bouton ${o.vedette ? '' : 'navy'}`} href="/contact/">Commander <span class="fleche" aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+      <p class="chapeau" data-reveal style="margin-top:24px">Sans offre, le tarif dépend de la commune de livraison, de 1 500 à 2 500 FCFA : <a href="/tarifs/">voir le détail par commune</a>.</p>
+    </div>
+  </section>
+
+  <section class="section sombre">
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <div class="conteneur deux-colonnes">
+      <div>
+        <p class="surtitre" data-reveal>Après la livraison</p>
+        <h2 data-reveal style="--delai:60ms">Un problème ?<br />On vous répond.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">Notez chaque livraison. En cas de souci, vous avez 48 heures pour faire une réclamation, avec une photo si besoin : notre équipe vous répond directement dans votre commande.</p>
+      </div>
+      <ul class="atouts" data-reveal="droite" style="color:#fff">
+        <li>Ticket de chaque commande téléchargeable en PDF</li>
+        <li>Coursier identifié : photo, nom, téléphone et plaque</li>
+        <li>Code de vérification envoyé par SMS au destinataire</li>
+        <li>Photo de preuve à chaque remise</li>
+        <li>Signalement d’un comportement inapproprié, traité par l’équipe</li>
+      </ul>
+    </div>
+  </section>
+
+  <Telechargement />
+</Base>
+
+<style>
+  .boutons-entete { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; position: relative; }
+  .boutons-entete .bouton.secondaire { color: #fff; box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.5); }
+</style>

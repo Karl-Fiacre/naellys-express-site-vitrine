@@ -1,0 +1,168 @@
+---
+// Formulaire en étapes (contact, partenariat, entreprise, candidature de livreur). Les demandes
+// partent vers la fonction serveur recevoirDemandeSite (dépôt naellys-express), qui les range
+// dans le back-office. Anti-spam : champ piège invisible et temps minimal de remplissage, en plus
+// des contrôles du serveur.
+import { SOCIETE, URL_DEMANDES } from '../data/site';
+
+export type Champ = {
+  nom: string;
+  libelle: string;
+  type: 'text' | 'tel' | 'email' | 'select' | 'textarea' | 'choix';
+  requis?: boolean;
+  options?: string[];
+  pleine?: boolean;
+  aide?: string;
+};
+export type Etape = { titre: string; champs: Champ[] };
+
+interface Props {
+  type: 'contact' | 'partenariat' | 'entreprise' | 'livreur';
+  titre: string;
+  etapes: Etape[];
+  envoi: string;
+  succes: string;
+}
+const { type, titre, etapes, envoi, succes } = Astro.props;
+const id = `formulaire-${type}`;
+---
+
+<div class="formulaire" data-formulaire={type} data-url={URL_DEMANDES} data-whatsapp={SOCIETE.whatsapp}>
+  <div class="tete">
+    <h3>{titre}</h3>
+    {etapes.length > 1 && (
+      <ol class="etapes" aria-label="Étapes du formulaire">
+        {etapes.map((e, i) => (
+          <li data-puce={i} class={i === 0 ? 'active' : ''}><span>{i + 1}</span><em>{e.titre}</em></li>
+        ))}
+      </ol>
+    )}
+    <div class="piste" aria-hidden="true"><div class="jauge" data-jauge></div></div>
+  </div>
+
+  <form id={id} novalidate>
+    <div class="pot" aria-hidden="true">
+      <label>Ne pas remplir <input type="text" name="_site_web" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <div class="volets">
+      {etapes.map((etape, i) => (
+        <fieldset class={`volet ${i === 0 ? 'actif' : ''}`} data-volet={i} disabled={i !== 0}>
+          <legend class="sr">{etape.titre}</legend>
+          <div class="champs">
+            {etape.champs.map((c) => (
+              c.type === 'choix' ? (
+                <div class="choix pleine" role="radiogroup" aria-label={c.libelle} data-champ={c.nom} data-requis={c.requis ? '1' : undefined}>
+                  <p class="libelle-choix">{c.libelle}{c.requis && ' *'}</p>
+                  <div class="pastilles">
+                    {c.options!.map((o) => (
+                      <label class="pastille"><input type="radio" name={c.nom} value={o} /><span>{o}</span></label>
+                    ))}
+                  </div>
+                  <span class="aide" data-aide></span>
+                </div>
+              ) : (
+                <div class={`champ ${c.pleine || c.type === 'textarea' ? 'pleine' : ''}`} data-champ={c.nom} data-requis={c.requis ? '1' : undefined}>
+                  {c.type === 'textarea' ? (
+                    <textarea id={`${id}-${c.nom}`} name={c.nom} placeholder=" " maxlength="2000"></textarea>
+                  ) : c.type === 'select' ? (
+                    <select id={`${id}-${c.nom}`} name={c.nom}>
+                      <option value="">Choisir…</option>
+                      {c.options!.map((o) => <option value={o}>{o}</option>)}
+                    </select>
+                  ) : (
+                    <input id={`${id}-${c.nom}`} name={c.nom} type={c.type} placeholder=" " maxlength="200"
+                      autocomplete={c.type === 'email' ? 'email' : c.type === 'tel' ? 'tel' : c.nom === 'nom' ? 'name' : c.nom === 'entreprise' ? 'organization' : 'off'}
+                      inputmode={c.type === 'tel' ? 'tel' : undefined} />
+                  )}
+                  <label for={`${id}-${c.nom}`}>{c.libelle}{c.requis && ' *'}</label>
+                  <span class="aide" data-aide>{c.aide ?? ''}</span>
+                </div>
+              )
+            ))}
+          </div>
+        </fieldset>
+      ))}
+    </div>
+
+    <div class="pied-formulaire">
+      <button type="button" class="bouton secondaire" data-precedent hidden>← Retour</button>
+      <span class="message" data-message role="status" aria-live="polite"></span>
+      <button type="submit" class="bouton" data-suivant data-aimant data-libelle-envoi={envoi}>
+        <span data-texte>{etapes.length > 1 ? 'Continuer' : envoi}</span> <span class="fleche" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </form>
+
+  <div class="reussite" data-reussite hidden>
+    <svg viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" />
+      <path d="M38 62 54 77 84 45" />
+    </svg>
+    <h3>Demande envoyée</h3>
+    <p>{succes}</p>
+    <div class="eclats" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => <i style={`--a:${i * 25.7}deg;--d:${(i % 3) * 60}ms`}></i>)}</div>
+  </div>
+</div>
+
+<style>
+  .formulaire { position: relative; background: #fff; border-radius: var(--rayon-grand); box-shadow: 0 40px 80px -40px rgb(27 42 74 / 0.45); padding: clamp(24px, 4vw, 48px); border: 1px solid rgb(228 226 221 / 0.7); overflow: hidden; }
+  .formulaire::before { content: ''; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--orange), #ffb37f, var(--navy)); }
+  .tete h3 { margin-bottom: 18px; }
+  .etapes { display: flex; gap: 10px; list-style: none; padding: 0; margin: 0 0 16px; flex-wrap: wrap; }
+  .etapes li { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.88rem; font-weight: 600; transition: color 0.4s; }
+  .etapes li span { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; border: 2px solid var(--border); font-family: var(--font-titre); font-size: 0.85rem; transition: all 0.4s var(--courbe); }
+  .etapes li em { font-style: normal; }
+  .etapes li.active { color: var(--navy); }
+  .etapes li.active span { border-color: var(--orange); background: var(--orange); color: #fff; transform: scale(1.08); }
+  .etapes li.faite span { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .piste { height: 4px; border-radius: 4px; background: var(--border); margin-bottom: 28px; overflow: hidden; }
+  .jauge { height: 100%; width: 0; background: linear-gradient(90deg, var(--orange), #ffb37f); border-radius: inherit; transition: width 0.7s var(--courbe); }
+  .volets { display: grid; }
+  .volet { grid-area: 1 / 1; border: 0; margin: 0; padding: 0; min-width: 0; opacity: 0; transform: translateX(40px); pointer-events: none; transition: opacity 0.5s var(--courbe), transform 0.6s var(--courbe); }
+  .volet.actif { opacity: 1; transform: none; pointer-events: auto; }
+  .volet.avant { transform: translateX(-40px); }
+  .champs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+  .pleine { grid-column: 1 / -1; }
+  .libelle-choix { font-weight: 600; color: var(--navy); margin: 0 0 10px; }
+  .pastilles { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pastille input { position: absolute; opacity: 0; pointer-events: none; }
+  .pastille span { display: inline-block; padding: 12px 18px; border-radius: 999px; border: 1.5px solid var(--border); cursor: pointer; font-weight: 500; transition: all 0.3s var(--courbe); user-select: none; }
+  .pastille span:hover { border-color: var(--orange); transform: translateY(-2px); }
+  .pastille input:checked + span { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 10px 22px -10px rgb(27 42 74 / 0.7); }
+  .pastille input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+  .choix .aide { display: block; font-size: 0.8rem; color: #b23a2e; min-height: 1.2em; margin-top: 6px; }
+  .pied-formulaire { display: flex; align-items: center; gap: 16px; margin-top: 28px; flex-wrap: wrap; }
+  .pied-formulaire [data-suivant] { margin-left: auto; }
+  .message { font-size: 0.9rem; color: #b23a2e; flex: 1; min-width: 200px; }
+  .message a { color: var(--orange); font-weight: 600; }
+  .pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  [data-suivant][aria-busy='true'] { opacity: 0.75; pointer-events: none; }
+  [data-suivant][aria-busy='true'] .fleche { animation: tourner 0.9s linear infinite; display: inline-block; }
+  @keyframes tourner { to { transform: rotate(360deg); } }
+
+  .reussite { text-align: center; padding: 30px 0 10px; position: relative; }
+  .reussite svg { width: 120px; height: 120px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .reussite circle { stroke: var(--orange-soft); stroke-width: 8; }
+  .reussite path { stroke: var(--orange); stroke-width: 9; stroke-dasharray: 80; stroke-dashoffset: 80; }
+  .reussite:not([hidden]) path { animation: tracer 0.8s var(--courbe) 0.2s forwards; }
+  .reussite:not([hidden]) svg { animation: rebond 0.7s var(--courbe); }
+  @keyframes tracer { to { stroke-dashoffset: 0; } }
+  @keyframes rebond { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.08); opacity: 1; } }
+  .eclats { position: absolute; left: 50%; top: 90px; }
+  .eclats i { position: absolute; width: 8px; height: 22px; border-radius: 4px; background: var(--orange); transform: rotate(var(--a)) translateY(0); opacity: 0; }
+  .eclats i:nth-child(odd) { background: var(--navy); height: 14px; }
+  .reussite:not([hidden]) .eclats i { animation: eclat 0.9s var(--courbe) var(--d) forwards; }
+  @keyframes eclat { 0% { opacity: 1; transform: rotate(var(--a)) translateY(0); } 100% { opacity: 0; transform: rotate(var(--a)) translateY(-110px); } }
+
+  @media (max-width: 640px) {
+    .champs { grid-template-columns: 1fr; }
+    .etapes li em { display: none; }
+    .pied-formulaire [data-suivant] { width: 100%; }
+  }
+</style>
+
+<script>
+  import { initialiserFormulaires } from '../scripts/formulaires';
+  document.addEventListener('astro:page-load', initialiserFormulaires);
+</script>

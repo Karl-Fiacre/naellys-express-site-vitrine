@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import Icone from '../components/Icone.astro';
+import Formulaire from '../components/Formulaire.astro';
+import { COMMUNES } from '../data/site';
+---
+
+<Base titre="Partenaires" description="Boutiques, restaurants, e-commerçants : devenez partenaire NAËLLYS EXPRESS. Tarif négocié par livraison, sans plafond mensuel, compte dédié et suivi de vos commandes.">
+  <EntetePage surtitre="Partenaires" titre="Grandissons <span class='accent'>ensemble.</span>" chapeau="Vous vendez, nous livrons. Boutiques, restaurants, pharmacies, e-commerçants : offrez à vos clients une livraison rapide et sûre, à un tarif négocié pour vous." />
+
+  <section class="section">
+    <div class="conteneur grille quatre remontee">
+      {[
+        ['portefeuille', 'Tarif négocié', 'Un prix fixe par livraison, quelle que soit la commune desservie.'],
+        ['colis', 'Sans plafond', 'Aucune limite mensuelle de livraisons : vous grandissez, nous suivons.'],
+        ['telephone', 'Compte dédié', 'Vos commandes passées et suivies depuis votre compte partenaire.'],
+        ['poignee', 'Conditions sur mesure', 'Délais de paiement, volumes, part des livraisons : on en parle ensemble.'],
+      ].map(([icone, titre, texte], i) => (
+        <div class="carte" data-reveal data-incliner style={`--delai:${i * 100}ms`}>
+          <span class="icone-disque"><Icone nom={icone} /></span>
+          <h3>{titre}</h3>
+          <p>{texte}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section sombre">
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <div class="conteneur">
+      <p class="surtitre" data-reveal>Le partenariat en 3 temps</p>
+      <h2 data-reveal style="--delai:60ms">Simple, rapide, sans engagement caché.</h2>
+      <ol class="temps">
+        {[
+          ['Vous nous écrivez', 'Présentez votre activité et vos volumes avec le formulaire ci-dessous.'],
+          ['On convient ensemble', 'Un conseiller vous appelle pour fixer votre tarif et vos conditions.'],
+          ['Vous livrez dès demain', 'Votre compte partenaire est créé, votre contrat s’approuve en ligne.'],
+        ].map(([titre, texte], i) => (
+          <li data-reveal style={`--delai:${i * 140}ms`}>
+            <span class="numero">{i + 1}</span>
+            <h3>{titre}</h3>
+            <p>{texte}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="demande">
+    <div class="conteneur deux-colonnes" style="align-items:start">
+      <div>
+        <p class="surtitre" data-reveal>Devenir partenaire</p>
+        <h2 data-reveal style="--delai:60ms">Parlez-nous de votre activité.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">Trois étapes, deux minutes. Notre équipe Partenariats étudie votre demande et vous rappelle.</p>
+        <ul class="atouts" data-reveal style="--delai:180ms">
+          <li>{COMMUNES.length} communes desservies dans le District d’Abidjan</li>
+          <li>Coursiers vérifiés, remise par code et photo de preuve</li>
+          <li>Contrat de partenariat signé en ligne</li>
+        </ul>
+      </div>
+      <div data-reveal="droite">
+        <Formulaire
+          type="partenariat"
+          titre="Demande de partenariat"
+          envoi="Envoyer ma demande"
+          succes="Merci ! Notre équipe Partenariats étudie votre demande et vous rappelle très vite."
+          etapes={[
+            { titre: 'Activité', champs: [
+              { nom: 'entreprise', libelle: 'Nom de votre activité', type: 'text', requis: true },
+              { nom: 'type_activite', libelle: 'Type d’activité', type: 'choix', requis: true, options: ['Boutique', 'Restaurant', 'E-commerce', 'Pharmacie', 'Supermarché', 'Autre'] },
+              { nom: 'commune', libelle: 'Commune', type: 'select', options: [...COMMUNES.map((c) => c.nom), 'Autre'], requis: true },
+            ] },
+            { titre: 'Volumes', champs: [
+              { nom: 'volume', libelle: 'Livraisons par semaine', type: 'choix', requis: true, options: ['Moins de 10', '10 à 50', '50 à 200', 'Plus de 200'] },
+              { nom: 'besoin', libelle: 'Ce que vous livrez', type: 'textarea', aide: 'Type de colis, tailles, horaires…' },
+            ] },
+            { titre: 'Contact', champs: [
+              { nom: 'nom', libelle: 'Nom et prénoms', type: 'text', requis: true },
+              { nom: 'telephone', libelle: 'Téléphone', type: 'tel', requis: true },
+              { nom: 'email', libelle: 'Email', type: 'email', pleine: true },
+            ] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .temps { list-style: none; padding: 0; margin: 50px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .temps li { position: relative; padding: 34px 28px; border-radius: 28px; background: rgb(255 255 255 / 0.05); border: 1px solid rgb(255 255 255 / 0.1); }
+  .temps .numero { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 18px; background: var(--orange); color: #fff; font-family: var(--font-titre); font-weight: 800; font-size: 1.4rem; margin-bottom: 18px; box-shadow: 0 14px 28px -12px rgb(232 114 44 / 0.9); }
+  .temps p { margin: 0; }
+  @media (max-width: 860px) { .temps { grid-template-columns: 1fr; } }
+</style>

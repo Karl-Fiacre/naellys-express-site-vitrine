@@ -1,0 +1,19 @@
+---
+import { SOCIETE } from '../data/site';
+const message = encodeURIComponent('Bonjour NAËLLYS EXPRESS, je souhaite envoyer un colis.');
+---
+
+<a class="whatsapp" href={`https://wa.me/${SOCIETE.whatsapp}?text=${message}`} target="_blank" rel="noopener" aria-label="Écrire à NAËLLYS EXPRESS sur WhatsApp" transition:persist="whatsapp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.7c-2 0-4-.5-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7Zm5.9-8c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.3-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5v-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 2.5 1 3 .8 3.6.7.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.4Z"/></svg>
+  <span>Une question ?</span>
+</a>
+
+<style>
+  .whatsapp { position: fixed; right: clamp(16px, 3vw, 28px); bottom: clamp(16px, 3vw, 28px); z-index: 45; display: inline-flex; align-items: center; gap: 10px; padding: 14px; border-radius: 999px; background: #25d366; color: #fff; text-decoration: none; font-weight: 600; box-shadow: 0 16px 36px -12px rgb(37 211 102 / 0.75); transition: transform 0.4s var(--courbe), padding 0.4s var(--courbe); }
+  .whatsapp svg { width: 30px; height: 30px; flex: none; }
+  .whatsapp span { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width 0.5s var(--courbe); }
+  .whatsapp:hover { transform: translateY(-3px); padding-right: 20px; }
+  .whatsapp:hover span { max-width: 140px; }
+  .whatsapp::before { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 rgb(37 211 102 / 0.55); animation: pulsation 2.6s infinite; }
+  @keyframes pulsation { 70% { box-shadow: 0 0 0 18px rgb(37 211 102 / 0); } 100% { box-shadow: 0 0 0 0 rgb(37 211 102 / 0); } }
+</style>

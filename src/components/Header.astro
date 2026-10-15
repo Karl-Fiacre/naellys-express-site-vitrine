@@ -1,0 +1,138 @@
+---
+// En-tête : transparent sur le haut des pages, verre dépoli au défilement ; reste en place
+// entre les pages (transition:persist dans Base.astro). Menu mobile plein écran.
+import { NAVIGATION, SOCIETE } from '../data/site';
+
+const chemin = Astro.url.pathname;
+const actif = (href: string) => (href === '/' ? chemin === '/' : chemin.startsWith(href));
+---
+
+<header class="entete" data-entete>
+  <div class="conteneur barre">
+    <a href="/" class="marque" aria-label="NAËLLYS EXPRESS, accueil">
+      <img src="/images/embleme.png" alt="" width="44" height="44" />
+      <span><strong>NAËLLYS</strong><em>EXPRESS</em></span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <ul>
+        {NAVIGATION.slice(1).map((l) => (
+          <li><a href={l.href} aria-current={actif(l.href) ? 'page' : undefined}>{l.libelle}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="appel" href={`tel:${SOCIETE.telephoneE164}`} aria-label={`Appeler le ${SOCIETE.telephone}`}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/></svg>
+        <span>{SOCIETE.telephone}</span>
+      </a>
+      <a class="bouton petit" href="/contact/">Nous contacter</a>
+      <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-mobile" data-burger>
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-mobile" id="menu-mobile" data-menu hidden>
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <nav aria-label="Navigation mobile">
+      <ul>
+        {NAVIGATION.map((l, i) => (
+          <li style={`--i:${i}`}><a href={l.href} aria-current={actif(l.href) ? 'page' : undefined}>{l.libelle}</a></li>
+        ))}
+        <li style={`--i:${NAVIGATION.length}`}><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="menu-pied">
+      <a href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a>
+      <a href={`mailto:${SOCIETE.email}`}>{SOCIETE.email}</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .entete { position: fixed; inset: 0 0 auto; z-index: 50; transition: background 0.5s var(--courbe), box-shadow 0.5s, backdrop-filter 0.5s; }
+  .barre { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 92px; transition: height 0.5s var(--courbe); }
+  .entete.reduit { background: rgb(17 27 49 / 0.78); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); box-shadow: 0 10px 40px -20px rgb(0 0 0 / 0.5); }
+  .entete.reduit .barre { height: 72px; }
+  .marque { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+  .marque img { width: 44px; height: 44px; background: #fff; border-radius: 13px; padding: 4px; transition: transform 0.6s var(--courbe); }
+  .marque:hover img { transform: rotate(-8deg) scale(1.06); }
+  .marque span { display: flex; flex-direction: column; line-height: 1; font-family: var(--font-titre); }
+  .marque strong { font-weight: 800; letter-spacing: 0.04em; font-size: 1.1rem; }
+  .marque em { font-style: normal; font-weight: 700; color: var(--orange); font-size: 0.72rem; letter-spacing: 0.42em; margin-top: 4px; }
+
+  .nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 6px; border-radius: 999px; background: rgb(255 255 255 / 0.06); border: 1px solid rgb(255 255 255 / 0.1); }
+  .nav a { position: relative; display: block; padding: 9px 15px; border-radius: 999px; color: var(--on-navy-muted); text-decoration: none; font-weight: 500; font-size: 0.93rem; transition: color 0.3s, background 0.3s; }
+  .nav a:hover { color: #fff; background: rgb(255 255 255 / 0.08); }
+  .nav a[aria-current='page'] { color: #fff; background: var(--orange); box-shadow: 0 8px 20px -8px rgb(232 114 44 / 0.9); }
+
+  .actions { display: flex; align-items: center; gap: 14px; }
+  .appel { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 600; font-size: 0.93rem; }
+  .appel svg { width: 18px; height: 18px; color: var(--orange); }
+  .petit { padding: 12px 20px; font-size: 0.92rem; }
+
+  .burger { display: none; width: 48px; height: 48px; border-radius: 14px; border: 1px solid rgb(255 255 255 / 0.2); background: rgb(255 255 255 / 0.06); cursor: pointer; position: relative; }
+  .burger span { position: absolute; left: 13px; right: 13px; height: 2px; border-radius: 2px; background: #fff; transition: transform 0.45s var(--courbe), top 0.45s var(--courbe); }
+  .burger span:first-child { top: 18px; }
+  .burger span:last-child { top: 28px; }
+  .burger[aria-expanded='true'] span:first-child { top: 23px; transform: rotate(45deg); }
+  .burger[aria-expanded='true'] span:last-child { top: 23px; transform: rotate(-45deg); }
+
+  .menu-mobile { position: fixed; inset: 0; z-index: -1; background: var(--navy-deep); padding: 120px var(--gouttiere) 40px; display: flex; flex-direction: column; justify-content: space-between; clip-path: circle(0 at calc(100% - 46px) 46px); transition: clip-path 0.8s var(--courbe); }
+  .menu-mobile.ouvert { clip-path: circle(150% at calc(100% - 46px) 46px); }
+  .menu-mobile ul { list-style: none; margin: 0; padding: 0; position: relative; }
+  .menu-mobile li { opacity: 0; transform: translateY(24px); transition: opacity 0.5s var(--courbe), transform 0.5s var(--courbe); transition-delay: calc(0.15s + var(--i) * 0.05s); }
+  .menu-mobile.ouvert li { opacity: 1; transform: none; }
+  .menu-mobile a { display: block; padding: 8px 0; font-family: var(--font-titre); font-weight: 800; font-size: clamp(1.8rem, 8vw, 2.6rem); color: #fff; text-decoration: none; }
+  .menu-mobile a[aria-current='page'] { color: var(--orange); }
+  .menu-pied { display: flex; flex-direction: column; gap: 6px; position: relative; }
+  .menu-pied a { color: var(--on-navy-muted); text-decoration: none; font-family: var(--font-texte); font-weight: 500; font-size: 1rem; padding: 2px 0; }
+
+  @media (max-width: 1120px) {
+    .nav { display: none; }
+    .burger { display: inline-block; }
+  }
+  @media (max-width: 640px) {
+    .appel span, .actions > .bouton { display: none; }
+    .barre { height: 78px; }
+  }
+</style>
+
+<script>
+  // Réinitialisé à chaque page (transitions d'Astro) : réduction au défilement, menu mobile.
+  let controleur: AbortController | null = null;
+  function initialiser() {
+    controleur?.abort();
+    controleur = new AbortController();
+    const { signal } = controleur;
+    const entete = document.querySelector<HTMLElement>('[data-entete]');
+    const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+    const menu = document.querySelector<HTMLElement>('[data-menu]');
+    if (!entete || !burger || !menu) return;
+
+    const surDefilement = () => entete.classList.toggle('reduit', window.scrollY > 24);
+    surDefilement();
+    window.addEventListener('scroll', surDefilement, { passive: true, signal });
+
+    const fermer = () => {
+      burger.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('ouvert');
+      document.body.style.overflow = '';
+      window.setTimeout(() => { if (!menu.classList.contains('ouvert')) menu.hidden = true; }, 800);
+    };
+    burger.onclick = () => {
+      const ouvrir = burger.getAttribute('aria-expanded') !== 'true';
+      if (!ouvrir) return fermer();
+      menu.hidden = false;
+      void menu.offsetHeight; // applique l'état fermé avant d'animer l'ouverture
+      menu.classList.add('ouvert');
+      burger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', fermer));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fermer(); }, { signal });
+  }
+  document.addEventListener('astro:page-load', initialiser);
+</script>

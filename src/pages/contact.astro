@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import Icone from '../components/Icone.astro';
+import Formulaire from '../components/Formulaire.astro';
+import { SOCIETE } from '../data/site';
+---
+
+<Base titre="Contact" description="Contactez NAËLLYS EXPRESS : téléphone et WhatsApp 07 15 97 83 99, email contact@naellys-express.com, Yopougon Sable, Abidjan.">
+  <EntetePage surtitre="Contact" titre="On vous écoute,<br /><span class='accent'>on vous répond.</span>" chapeau="Une livraison à organiser, une question sur nos offres, une réclamation : écrivez-nous, appelez-nous ou passez par WhatsApp." />
+
+  <section class="section">
+    <div class="conteneur bloc-contact remontee">
+      <div class="coordonnees">
+        <a href={`tel:${SOCIETE.telephoneE164}`} data-reveal>
+          <span class="icone-disque"><Icone nom="telephone" /></span>
+          <span><strong>{SOCIETE.telephone}</strong><span>Appelez-nous</span></span>
+        </a>
+        <a href={`https://wa.me/${SOCIETE.whatsapp}`} target="_blank" rel="noopener" data-reveal style="--delai:80ms">
+          <span class="icone-disque"><Icone nom="message" /></span>
+          <span><strong>WhatsApp</strong><span>Écrivez-nous directement</span></span>
+        </a>
+        <a href={`mailto:${SOCIETE.email}`} data-reveal style="--delai:160ms">
+          <span class="icone-disque"><Icone nom="facture" /></span>
+          <span><strong>{SOCIETE.email}</strong><span>Pour vos demandes écrites</span></span>
+        </a>
+        <div data-reveal style="--delai:240ms">
+          <span class="icone-disque"><Icone nom="suivi" /></span>
+          <span><strong>Siège</strong><span>{SOCIETE.siege}</span></span>
+        </div>
+      </div>
+      <div data-reveal="droite">
+        <Formulaire
+          type="contact"
+          titre="Écrivez-nous"
+          envoi="Envoyer le message"
+          succes="Merci ! Votre message est bien arrivé. Notre équipe vous répond au plus vite."
+          etapes={[
+            { titre: 'Message', champs: [
+              { nom: 'sujet', libelle: 'Votre demande', type: 'choix', requis: true, options: ['Envoyer un colis', 'Question sur une livraison', 'Offres entreprise', 'Réclamation', 'Autre'] },
+              { nom: 'nom', libelle: 'Nom et prénoms', type: 'text', requis: true },
+              { nom: 'telephone', libelle: 'Téléphone', type: 'tel', requis: true },
+              { nom: 'email', libelle: 'Email (facultatif)', type: 'email', pleine: true },
+              { nom: 'message', libelle: 'Votre message', type: 'textarea', requis: true },
+            ] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>

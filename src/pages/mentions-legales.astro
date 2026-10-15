@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import { SOCIETE } from '../data/site';
+---
+
+<Base titre="Mentions légales" description="Mentions légales du site NAËLLYS EXPRESS : éditeur, directeur de la publication, hébergement, propriété intellectuelle et données personnelles.">
+  <EntetePage surtitre="Informations légales" titre="Mentions légales" chapeau="Dernière mise à jour : 15 octobre 2026." />
+
+  <section class="section">
+    <div class="conteneur legal carte">
+      <h2>Éditeur du site</h2>
+      <p><strong>{SOCIETE.nom}</strong>, {SOCIETE.forme} au capital de {SOCIETE.capital}.</p>
+      <ul>
+        <li>Registre du Commerce et du Crédit Mobilier : {SOCIETE.rccm}</li>
+        <li>Compte contribuable : {SOCIETE.contribuable}</li>
+        <li>Siège : {SOCIETE.siege}</li>
+        <li>Téléphone : <a href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a></li>
+        <li>Email : <a href={`mailto:${SOCIETE.email}`}>{SOCIETE.email}</a></li>
+      </ul>
+
+      <h2>Directeur de la publication</h2>
+      <p>{SOCIETE.dirigeant}, {SOCIETE.qualite}.</p>
+
+      <h2>Hébergement</h2>
+      <p>Le site est hébergé par Cloudflare, Inc. (cloudflare.com). Les données de l’application NAËLLYS EXPRESS sont hébergées par Supabase Inc. (supabase.com), sur des serveurs situés dans l’Union européenne.</p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>La marque NAËLLYS EXPRESS, son logo, ses visuels et les contenus de ce site sont protégés. Toute reproduction ou utilisation sans autorisation écrite est interdite.</p>
+
+      <h2>Données personnelles</h2>
+      <p>Les informations envoyées par les formulaires de ce site (nom, téléphone, email, message) servent uniquement à vous répondre et à traiter votre demande. Elles sont conservées le temps nécessaire à ce traitement, ne sont jamais vendues et sont protégées conformément à la loi n° 2013-450 du 19 juin 2013 relative à la protection des données à caractère personnel. Vous pouvez demander leur consultation, leur correction ou leur suppression en écrivant à <a href={`mailto:${SOCIETE.email}`}>{SOCIETE.email}</a>.</p>
+      <p>Le traitement des données de l’application est décrit dans la <a href={`${SOCIETE.backOffice}/confidentialite`}>politique de confidentialité</a>. Ce site n’utilise ni cookie publicitaire ni outil de mesure d’audience tiers.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal { max-width: 860px; }
+  .legal h2 { font-size: 1.4rem; margin-top: 32px; }
+  .legal h2:first-child { margin-top: 0; }
+  .legal ul { padding-left: 20px; }
+  .legal a { color: var(--orange); font-weight: 600; }
+</style>

@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import { FAQ, SOCIETE } from '../data/site';
+
+const donneesFaq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.flatMap((t) => t.questions).map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.r } })),
+};
+---
+
+<Base titre="Questions fréquentes" description="Communes desservies, livraison le jour même, sécurité, tarifs, factures, partenariat, recrutement : toutes les réponses sur NAËLLYS EXPRESS.">
+  <script type="application/ld+json" set:html={JSON.stringify(donneesFaq)} />
+  <EntetePage surtitre="FAQ" titre="Vos questions,<br /><span class='accent'>nos réponses.</span>" chapeau="Tout ce qu’il faut savoir pour envoyer, recevoir et livrer avec NAËLLYS EXPRESS." />
+
+  <section class="section">
+    <div class="conteneur faq-page">
+      <nav class="themes" aria-label="Thèmes" data-reveal>
+        {FAQ.map((t, i) => <a href={`#theme-${i}`}>{t.theme}</a>)}
+      </nav>
+      <div class="contenu">
+        {FAQ.map((t, i) => (
+          <div class="theme" id={`theme-${i}`}>
+            <h2 data-reveal>{t.theme}</h2>
+            <div class="faq-liste">
+              {t.questions.map((q, j) => (
+                <details data-reveal style={`--delai:${j * 80}ms`}>
+                  <summary>{q.q}</summary>
+                  <div class="reponse"><p>{q.r}</p></div>
+                </details>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div class="encore carte" data-reveal>
+          <h3>Vous n’avez pas trouvé ?</h3>
+          <p>Notre équipe vous répond par téléphone, par WhatsApp ou par le formulaire de contact.</p>
+          <div class="liens">
+            <a class="bouton" href="/contact/">Nous écrire <span class="fleche" aria-hidden="true">→</span></a>
+            <a class="bouton secondaire" href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .faq-page { display: grid; grid-template-columns: 240px 1fr; gap: clamp(30px, 5vw, 70px); align-items: start; }
+  .themes { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 6px; }
+  .themes a { padding: 12px 16px; border-radius: 14px; text-decoration: none; font-weight: 600; color: var(--muted); transition: background 0.3s, color 0.3s, transform 0.3s var(--courbe); }
+  .themes a:hover { background: #fff; color: var(--navy); transform: translateX(4px); }
+  .theme { margin-bottom: 56px; scroll-margin-top: 110px; }
+  .theme h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 20px; }
+  .encore .liens { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+  @media (max-width: 860px) { .faq-page { grid-template-columns: 1fr; } .themes { position: static; flex-direction: row; flex-wrap: wrap; } }
+</style>

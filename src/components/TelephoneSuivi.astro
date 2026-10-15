@@ -1,0 +1,85 @@
+---
+// Téléphone animé : le suivi d'une course dans l'application (mêmes écrans que l'app), dont les
+// étapes avancent en boucle.
+---
+
+<div class="telephone" data-incliner aria-hidden="true">
+  <div class="ecran">
+    <div class="haut">
+      <span class="raie r1"></span><span class="raie r2"></span>
+      <small>← Mes commandes</small>
+      <strong>Course #1042</strong>
+      <em class="statut">En livraison</em>
+    </div>
+    <div class="corps">
+      <div class="carte trajet">
+        <div><i class="point o"></i><span>Riviera 2, Cocody</span></div>
+        <div class="trait"></div>
+        <div><i class="point n"></i><span>Rue du Commerce, Plateau</span></div>
+      </div>
+      <ol class="carte etapes">
+        <li><span>Commande reçue</span><small>10:05</small></li>
+        <li><span>Colis collecté</span><small>10:32</small></li>
+        <li><span>En livraison</span><small>10:41</small></li>
+        <li><span>Livré</span><small>11:02</small></li>
+      </ol>
+      <div class="carte coursier">
+        <i class="avatar"></i>
+        <div><small>Votre coursier</small><strong>Ibrahim Koné</strong><span>Moto 1234 AB 01</span></div>
+        <i class="appel">✆</i>
+      </div>
+      <div class="code"><small>CODE DE VÉRIFICATION</small><b>0 4 2 7</b></div>
+    </div>
+  </div>
+  <div class="notification">
+    <span class="logo-notif"></span>
+    <div><strong>NAËLLYS EXPRESS</strong><span>Votre colis est en route 🛵</span></div>
+  </div>
+</div>
+
+<style>
+  .telephone { position: relative; width: min(300px, 76vw); aspect-ratio: 9 / 18.4; border-radius: 48px; padding: 12px; background: linear-gradient(145deg, #2a3754, #0b1222); box-shadow: 0 60px 100px -40px rgb(0 0 0 / 0.65), inset 0 0 0 1.5px rgb(255 255 255 / 0.12); transition: transform 0.6s var(--courbe); transform-style: preserve-3d; }
+  .telephone::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--lx, 30%) var(--ly, 10%), rgb(255 255 255 / 0.18), transparent 45%); }
+  .ecran { height: 100%; border-radius: 38px; overflow: hidden; background: var(--cream); display: flex; flex-direction: column; font-size: 12.5px; color: var(--text); }
+  .haut { position: relative; background: var(--navy); color: #fff; padding: 38px 20px 18px; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
+  .haut small { color: var(--on-navy-muted); font-size: 11px; }
+  .haut strong { font-family: var(--font-titre); font-size: 20px; }
+  .statut { font-style: normal; align-self: flex-start; margin-top: 8px; padding: 4px 10px; border-radius: 999px; background: rgb(232 114 44 / 0.18); color: #ffb37f; font-weight: 700; font-size: 11px; }
+  .raie { position: absolute; background: var(--orange); border-radius: 99px; transform: rotate(-32deg); }
+  .r1 { width: 220px; height: 16px; right: -70px; top: 18px; }
+  .r2 { width: 170px; height: 6px; right: -70px; top: 44px; opacity: 0.8; }
+  .corps { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .carte { background: #fff; border-radius: 16px; padding: 12px 14px; box-shadow: 0 6px 18px -10px rgb(27 42 74 / 0.3); margin: 0; }
+  .trajet div { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .point { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .point.o { background: var(--orange); }
+  .point.n { background: var(--navy); }
+  .trait { height: 14px; margin-left: 4px; border-left: 2px dashed var(--orange); }
+  .etapes { list-style: none; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .etapes li { position: relative; display: flex; justify-content: space-between; padding-left: 22px; color: var(--muted); }
+  .etapes li::before { content: ''; position: absolute; left: 0; top: 3px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border); background: #fff; }
+  .etapes small { opacity: 0; }
+  .etapes li { animation: etape 9s infinite; animation-delay: calc(var(--n) * 1.6s); }
+  .etapes li:nth-child(1) { --n: 0; } .etapes li:nth-child(2) { --n: 1; } .etapes li:nth-child(3) { --n: 2; } .etapes li:nth-child(4) { --n: 3; }
+  .etapes li small { animation: heure 9s infinite; animation-delay: calc(var(--n) * 1.6s); }
+  @keyframes etape { 0%, 4% { color: var(--muted); } 8%, 88% { color: var(--navy); font-weight: 600; } 100% { color: var(--muted); } }
+  @keyframes heure { 0%, 4% { opacity: 0; } 8%, 88% { opacity: 1; } 100% { opacity: 0; } }
+  .etapes li::before { animation: puce 9s infinite; animation-delay: calc(var(--n) * 1.6s); }
+  @keyframes puce { 0%, 4% { background: #fff; border-color: var(--border); } 8%, 88% { background: var(--green); border-color: var(--green); } 100% { background: #fff; border-color: var(--border); } }
+  .coursier { display: flex; align-items: center; gap: 10px; }
+  .coursier div { flex: 1; display: flex; flex-direction: column; }
+  .coursier small { color: var(--muted); font-size: 10.5px; }
+  .coursier strong { font-family: var(--font-titre); color: var(--navy); font-size: 14px; }
+  .coursier span { font-size: 11px; font-weight: 600; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; flex: none; background: radial-gradient(circle at 50% 38%, #8a6a55 0 26%, transparent 27%), radial-gradient(circle at 50% 100%, #8a6a55 0 44%, transparent 45%), var(--orange-soft); }
+  .appel { font-style: normal; color: var(--green); font-size: 18px; }
+  .code { background: var(--navy); color: #fff; border-radius: 16px; padding: 12px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+  .code small { color: var(--on-navy-muted); letter-spacing: 0.14em; font-size: 9.5px; }
+  .code b { font-family: var(--font-titre); color: var(--orange); font-size: 26px; letter-spacing: 0.2em; }
+  .notification { position: absolute; left: -18%; top: 12%; display: flex; align-items: center; gap: 10px; padding: 12px 16px 12px 12px; border-radius: 18px; background: rgb(255 255 255 / 0.92); backdrop-filter: blur(10px); box-shadow: 0 24px 50px -20px rgb(0 0 0 / 0.5); color: var(--text); font-size: 12px; animation: notifier 9s infinite; transform: translateZ(60px); }
+  .notification div { display: flex; flex-direction: column; }
+  .notification strong { font-family: var(--font-titre); color: var(--navy); font-size: 11px; letter-spacing: 0.04em; }
+  .logo-notif { width: 34px; height: 34px; border-radius: 10px; background: #fff url('/images/embleme.png') center / 80% no-repeat; box-shadow: 0 0 0 1px var(--border); flex: none; }
+  @keyframes notifier { 0%, 30% { opacity: 0; transform: translateY(-14px) translateZ(60px); } 36%, 70% { opacity: 1; transform: translateY(0) translateZ(60px); } 76%, 100% { opacity: 0; transform: translateY(-14px) translateZ(60px); } }
+  @media (max-width: 900px) { .notification { left: -6%; } }
+</style>
