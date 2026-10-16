@@ -26,3 +26,15 @@ Cloudflare Workers, fichiers statiques (`wrangler.jsonc`, dossier `dist`) :
 - variable de compilation : `NODE_VERSION` = `20`
 
 En-têtes de sécurité : `public/_headers`.
+
+Le Worker `worker/index.js` sert les pages et compte les visites (statistiques du back-office) :
+pour chaque page HTML vue, il transmet la page, le navigateur, le pays et la ville à l'Edge
+Function `compterVisite`, qui ne garde jamais l'adresse IP. À régler dans Cloudflare :
+le secret `VISITES_SECRET` (la même valeur que le secret Supabase du même nom, 32 caractères au
+moins). Sans ce secret, le site fonctionne mais rien n'est compté.
+
+## Conditions et CGU
+
+Avant d'envoyer un formulaire, le visiteur lit et accepte les conditions de son profil et les
+CGU (`src/data/conditions.ts`, page `/cgu/`). Les CGU reprennent celles de l'application
+(version 2 du 16/10/2026) : à modifier aux deux endroits.

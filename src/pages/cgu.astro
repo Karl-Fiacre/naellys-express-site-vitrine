@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import { CGU } from '../data/conditions';
+import { SOCIETE } from '../data/site';
+---
+
+<Base titre="Conditions générales d’utilisation" description="Conditions générales d'utilisation de l'application et du service de livraison NAËLLYS EXPRESS à Abidjan.">
+  <EntetePage surtitre="Informations légales" titre="Conditions générales d’utilisation" chapeau="Dernière mise à jour : 16 octobre 2026." />
+
+  <section class="section">
+    <div class="conteneur legal carte">
+      {CGU.map((partie) => (
+        <>
+          {partie.titre && <h2>{partie.titre}</h2>}
+          {partie.paragraphes?.map((p) => <p>{p}</p>)}
+          {partie.points && <ul>{partie.points.map((p) => <li>{p}</li>)}</ul>}
+        </>
+      ))}
+      <p class="note">
+        Voir aussi la <a href={`${SOCIETE.backOffice}/confidentialite`}>politique de confidentialité</a> et les
+        <a href="/mentions-legales/">mentions légales</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal { max-width: 860px; }
+  .legal h2 { font-size: 1.3rem; margin-top: 32px; }
+  .legal ul { padding-left: 20px; }
+  .legal li { margin-bottom: 6px; }
+  .legal a { color: var(--orange); font-weight: 600; }
+  .note { margin-top: 32px; color: var(--muted); }
+</style>

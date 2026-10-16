@@ -1,7 +1,7 @@
 // Plan du site pour les moteurs de recherche.
 import type { APIRoute } from 'astro';
 
-const PAGES = ['', 'particuliers/', 'entreprises/', 'partenaires/', 'tarifs/', 'devenir-livreur/', 'faq/', 'contact/', 'mentions-legales/'];
+const PAGES = ['', 'particuliers/', 'entreprises/', 'partenaires/', 'tarifs/', 'devenir-livreur/', 'faq/', 'contact/', 'mentions-legales/', 'cgu/'];
 
 export const GET: APIRoute = ({ site }) => {
   const urls = PAGES.map((p) => `<url><loc>${new URL(p, site)}</loc><changefreq>monthly</changefreq></url>`).join('');

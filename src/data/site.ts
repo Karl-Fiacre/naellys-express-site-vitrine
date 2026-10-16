@@ -116,6 +116,8 @@ export const FAQ = [
     questions: [
       { q: 'Comment savoir qui livre mon colis ?', r: 'Dès qu’un coursier est assigné, l’application affiche sa photo, son nom complet, son téléphone et l’immatriculation de sa moto, tous vérifiés par notre équipe.' },
       { q: 'Comment le colis est-il remis ?', r: 'Le destinataire reçoit un code de vérification à 4 chiffres par SMS. Le colis n’est remis que sur présentation de ce code, et le coursier prend une photo de preuve.' },
+      { q: 'Puis-je suivre le coursier ?', r: 'Oui : pendant toute la course, sa position s’affiche en direct sur une carte, avec le temps de trajet estimé selon le trafic.' },
+      { q: 'Et si la livraison n’a pas pu se faire ?', r: 'Elle est reportée au lendemain, en priorité. Le coursier en explique la raison et notre équipe vous rappelle pour convenir de la livraison.' },
       { q: 'Et en cas de problème ?', r: 'Vous pouvez faire une réclamation dans les 48 heures qui suivent la livraison, depuis l’application. Notre équipe vous répond directement dans votre commande.' },
     ],
   },
@@ -123,7 +125,8 @@ export const FAQ = [
     theme: 'Paiement et offres',
     questions: [
       { q: 'Combien coûte une livraison ?', r: 'Avec l’offre B2C, 2 000 FCFA la course dans toutes les communes desservies. Sans offre, le tarif dépend de la commune de livraison (de 1 500 à 2 500 FCFA).' },
-      { q: 'Comment payer ?', r: 'Le paiement en ligne n’est pas proposé dans l’application : le règlement se fait selon les modalités communiquées par NAËLLYS EXPRESS ou prévues par votre contrat.' },
+      { q: 'Comment payer ?', r: 'Une livraison à la course se règle au coursier au moment de la remise, au prix affiché dans l’application. Les abonnements entreprise et les partenaires sont facturés selon leur contrat.' },
+      { q: 'Peut-on commander le soir ou le dimanche ?', r: 'Oui. De 17 h 30 à 9 h 30, dimanche compris, votre commande est attribuée automatiquement à un coursier disponible.' },
       { q: 'Les entreprises reçoivent-elles une facture ?', r: 'Oui : une facture normalisée électronique (FNE) dès la première livraison du mois avec la formule Premium, et à partir de 10 livraisons dans le mois avec la formule Standard.' },
     ],
   },
@@ -132,7 +135,8 @@ export const FAQ = [
     questions: [
       { q: 'Comment devenir partenaire ?', r: 'Remplissez le formulaire de la page Partenaires : notre équipe vous contacte pour convenir d’un tarif par livraison, sans plafond mensuel, et de vos conditions.' },
       { q: 'Comment devenir livreur NAËLLYS EXPRESS ?', r: 'Envoyez votre candidature depuis la page Devenir livreur. Il faut être majeur, avoir un permis de conduire valide et, pour un indépendant, sa propre moto avec ses papiers en règle.' },
-      { q: 'Comment sont payés les livreurs indépendants ?', r: 'Chaque jour, sur leur compte Wave, pour les livraisons validées, après la commission de NAËLLYS EXPRESS. Leurs gains sont consultables dans l’application.' },
+      { q: 'Comment sont payés les livreurs indépendants ?', r: 'Ils encaissent eux-mêmes le prix des livraisons payées à la remise et reversent le jour même, avant minuit, la commission de NAËLLYS EXPRESS. Les livraisons facturées leur sont réglées sur leur compte Wave. Tout est calculé dans l’application.' },
+      { q: 'Quand les partenaires reçoivent-ils leur part ?', r: 'Le jour même pour une commande passée avant 12 h et livrée ce jour-là ; sinon le lendemain de la livraison, sur leur compte Wave.' },
     ],
   },
 ];

@@ -2,7 +2,9 @@
 // Formulaire en étapes (contact, partenariat, entreprise, candidature de livreur). Les demandes
 // partent vers la fonction serveur recevoirDemandeSite (dépôt naellys-express), qui les range
 // dans le back-office. Anti-spam : champ piège invisible et temps minimal de remplissage, en plus
-// des contrôles du serveur.
+// des contrôles du serveur. Dernière étape : conditions du profil et CGU à lire et accepter
+// (16/10/2026), vérifiées aussi par le serveur.
+import { CONDITIONS, CONDITIONS_VERSION } from '../data/conditions';
 import { SOCIETE, URL_DEMANDES } from '../data/site';
 
 export type Champ = {
@@ -25,9 +27,10 @@ interface Props {
 }
 const { type, titre, etapes, envoi, succes } = Astro.props;
 const id = `formulaire-${type}`;
+const conditions = CONDITIONS[type];
 ---
 
-<div class="formulaire" data-formulaire={type} data-url={URL_DEMANDES} data-whatsapp={SOCIETE.whatsapp}>
+<div class="formulaire" data-formulaire={type} data-url={URL_DEMANDES} data-whatsapp={SOCIETE.whatsapp} data-conditions-version={CONDITIONS_VERSION}>
   <div class="tete">
     <h3>{titre}</h3>
     {etapes.length > 1 && (
@@ -80,6 +83,20 @@ const id = `formulaire-${type}`;
               )
             ))}
           </div>
+          {i === etapes.length - 1 && (
+            <div class="conditions" data-champ="_conditions" data-requis="1">
+              <details>
+                <summary>{conditions.titre}</summary>
+                <ul>{conditions.points.map((p) => <li>{p}</li>)}</ul>
+                <p>Ainsi que les <a href="/cgu/" target="_blank" rel="noopener">conditions générales d’utilisation</a> de NAËLLYS EXPRESS.</p>
+              </details>
+              <label class="accord">
+                <input type="checkbox" name="_conditions" value="oui" />
+                <span>J’ai lu et j’accepte les conditions ci-dessus et les <a href="/cgu/" target="_blank" rel="noopener">CGU</a>.</span>
+              </label>
+              <span class="aide" data-aide></span>
+            </div>
+          )}
         </fieldset>
       ))}
     </div>
@@ -135,6 +152,18 @@ const id = `formulaire-${type}`;
   .pied-formulaire [data-suivant] { margin-left: auto; }
   .message { font-size: 0.9rem; color: #b23a2e; flex: 1; min-width: 200px; }
   .message a { color: var(--orange); font-weight: 600; }
+  .conditions { margin-top: 22px; padding: 18px 20px; border-radius: var(--rayon); background: var(--cream); border: 1px solid var(--border); }
+  .conditions summary { cursor: pointer; font-weight: 700; color: var(--navy); list-style: none; display: flex; align-items: center; gap: 10px; }
+  .conditions summary::-webkit-details-marker { display: none; }
+  .conditions summary::before { content: '+'; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--orange); color: #fff; font-weight: 700; transition: transform 0.4s var(--courbe); flex: none; }
+  .conditions details[open] summary::before { transform: rotate(45deg); }
+  .conditions ul { margin: 14px 0 6px; padding-left: 20px; font-size: 0.92rem; color: var(--text); }
+  .conditions li { margin-bottom: 6px; }
+  .conditions p { font-size: 0.92rem; margin: 6px 0 0; }
+  .conditions a { color: var(--orange); font-weight: 600; }
+  .accord { display: flex; gap: 12px; align-items: flex-start; margin-top: 14px; cursor: pointer; font-weight: 500; }
+  .accord input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--orange); flex: none; }
+  .conditions .aide { display: block; font-size: 0.8rem; color: #b23a2e; min-height: 1.2em; margin-top: 6px; }
   .pot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   [data-suivant][aria-busy='true'] { opacity: 0.75; pointer-events: none; }

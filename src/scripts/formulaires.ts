@@ -1,5 +1,5 @@
 // Formulaires en étapes du site vitrine : vérification de chaque étape, envoi à la fonction
-// serveur recevoirDemandeSite, animation de réussite. En cas d'échec réseau, le visiteur peut
+// serveur recevoirDemandeSite (avec l'acceptation des conditions et des CGU), animation de réussite. En cas d'échec réseau, le visiteur peut
 // toujours écrire sur WhatsApp.
 
 const MOBILE_CI = /^(?:\+?225)?\s*0[157](?:[\s.-]?\d){8}$/;
@@ -7,6 +7,7 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function valeur(form: HTMLFormElement, nom: string): string {
   const champ = form.elements.namedItem(nom);
+  if (champ instanceof HTMLInputElement && champ.type === 'checkbox') return champ.checked ? champ.value : '';
   if (champ instanceof RadioNodeList) return String(champ.value ?? '').trim();
   if (champ instanceof HTMLInputElement || champ instanceof HTMLTextAreaElement || champ instanceof HTMLSelectElement) return champ.value.trim();
   return '';
@@ -21,7 +22,7 @@ function verifierVolet(volet: HTMLElement, form: HTMLFormElement): boolean {
     const entree = bloc.querySelector<HTMLInputElement>('input:not([type=radio]), textarea, select');
     const type = entree?.getAttribute('type');
     let erreur = '';
-    if (bloc.dataset.requis && !v) erreur = 'Ce champ est obligatoire.';
+    if (bloc.dataset.requis && !v) erreur = type === 'checkbox' ? 'Acceptez les conditions et les CGU pour envoyer votre demande.' : 'Ce champ est obligatoire.';
     else if (v && type === 'tel' && !MOBILE_CI.test(v)) erreur = 'Un mobile ivoirien à 10 chiffres (01, 05 ou 07).';
     else if (v && type === 'email' && !EMAIL.test(v)) erreur = 'Adresse email invalide.';
     else if (v && nom === 'message' && v.length < 10) erreur = 'Quelques mots de plus (10 caractères au moins).';
@@ -94,7 +95,15 @@ export function initialiserFormulaires() {
         const reponse = await fetch(racine.dataset.url!, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: racine.dataset.formulaire, champs, page: location.pathname, piege, duree: Date.now() - ouvertLe }),
+          body: JSON.stringify({
+            type: racine.dataset.formulaire,
+            champs,
+            page: location.pathname,
+            piege,
+            duree: Date.now() - ouvertLe,
+            conditions: valeur(form, '_conditions') === 'oui',
+            conditions_version: racine.dataset.conditionsVersion,
+          }),
         });
         const corps = await reponse.json().catch(() => ({}));
         if (!reponse.ok) throw new Error(typeof corps.erreur === 'string' ? corps.erreur : '');

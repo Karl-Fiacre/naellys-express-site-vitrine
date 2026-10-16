@@ -6,14 +6,14 @@ import Formulaire from '../components/Formulaire.astro';
 import { COMMUNES } from '../data/site';
 ---
 
-<Base titre="Devenir livreur" description="Rejoignez les coursiers NAËLLYS EXPRESS à Abidjan : salarié ou indépendant, courses assignées par l'équipe, gains suivis dans l'application et paiement quotidien sur Wave.">
-  <EntetePage surtitre="Recrutement" titre="Roulez avec<br /><span class='accent'>NAËLLYS EXPRESS.</span>" chapeau="Salarié ou indépendant, rejoignez une équipe de coursiers vérifiés, avec une application pensée pour vous : courses assignées, navigation, gains et paiements suivis au jour le jour." />
+<Base titre="Devenir livreur" description="Rejoignez les coursiers NAËLLYS EXPRESS à Abidjan : salarié ou indépendant, courses assignées par l'équipe, encaissement à la livraison et commission reversée le jour même, gains suivis dans l'application.">
+  <EntetePage surtitre="Recrutement" titre="Roulez avec<br /><span class='accent'>NAËLLYS EXPRESS.</span>" chapeau="Salarié ou indépendant, rejoignez une équipe de coursiers vérifiés, avec une application pensée pour vous : courses assignées, carte en direct, gains et règlements suivis au jour le jour." />
 
   <section class="section">
     <div class="conteneur grille trois remontee">
       {[
-        ['portefeuille', 'Payé chaque jour', 'Indépendant : vos gains versés chaque jour sur votre compte Wave, après la commission NAËLLYS EXPRESS.'],
-        ['telephone', 'Tout dans l’app', 'Disponibilité en un geste, navigation, code du destinataire et historique de vos gains.'],
+        ['portefeuille', 'Payé à chaque livraison', 'Indépendant : vous encaissez le prix de la course à la remise et reversez la commission NAËLLYS EXPRESS le jour même, avant minuit.'],
+        ['telephone', 'Tout dans l’app', 'Disponibilité en un geste, carte et temps de trajet en direct, code du destinataire et historique de vos gains.'],
         ['etoile', 'Primes de fidélité', 'Ancienneté, nombre de livraisons et note des clients ouvrent droit à des primes.'],
       ].map(([icone, titre, texte], i) => (
         <div class="carte" data-reveal data-incliner style={`--delai:${i * 120}ms`}>
@@ -38,7 +38,7 @@ import { COMMUNES } from '../data/site';
         <li>Un permis de conduire valide</li>
         <li>Indépendant : votre propre moto, avec sa carte de vignette et son assurance</li>
         <li>Une pièce d’identité et un selfie pris dans l’application</li>
-        <li>Indépendant : un compte Wave pour vos paiements</li>
+        <li>Indépendant : un compte Wave, et le reversement de la commission chaque jour avant minuit</li>
       </ul>
     </div>
   </section>
