@@ -16,7 +16,7 @@ export const SOCIETE = {
   dirigeant: 'Brou Dominique Nyamien',
   qualite: 'Directeur Général',
   slogan: 'Vos colis, notre priorité !',
-  backOffice: 'https://naellys-back-office.fiacrenguessan.workers.dev',
+  backOffice: 'https://admin.naellys-express.com',
 };
 
 /** Fonction serveur qui enregistre les demandes du site dans le back-office (sans clé côté site). */
