@@ -1,0 +1,88 @@
+---
+// Zones desservies (référencement, 16/10/2026) : District d'Abidjan, Grand Abidjan et Côte d'Ivoire.
+// Honnêteté avant tout : les villes non desservies sont citées comme telles, jamais présentées
+// comme couvertes (ce serait trompeur pour le client, et sanctionné par les moteurs de recherche).
+import Base from '../layouts/Base.astro';
+import EntetePage from '../components/EntetePage.astro';
+import { ZONES, ZONES_NON_DESSERVIES, tarifTexte } from '../data/zones';
+import { SOCIETE } from '../data/site';
+
+const liste = {
+  '@type': 'ItemList',
+  name: 'Communes desservies par NAËLLYS EXPRESS',
+  itemListElement: ZONES.map((z, i) => ({ '@type': 'ListItem', position: i + 1, name: `Livraison ${z.a}`, url: `https://naellys-express.com/livraison/${z.slug}/` })),
+};
+---
+
+<Base
+  titre="Zones desservies"
+  titreSeo="Zones de livraison : District d’Abidjan, Grand Abidjan — NAËLLYS EXPRESS"
+  fil={[{ nom: 'Zones desservies', url: '/zones-desservies/' }]}
+  jsonLd={[liste]}
+  description="NAËLLYS EXPRESS livre à moto dans 11 communes du District d'Abidjan : Abobo, Adjamé, Attécoubé, Bingerville, Cocody, Koumassi, Marcory, Plateau, Port-Bouët, Treichville et Yopougon."
+>
+  <EntetePage
+    surtitre="Livraison dans le District d’Abidjan"
+    titre="11 communes,<br /><span class='accent'>un seul réflexe.</span>"
+    chapeau="Entreprise de livraison basée à Yopougon, NAËLLYS EXPRESS livre à moto dans tout le District autonome d’Abidjan, du matin au soir."
+  />
+
+  <section class="section">
+    <div class="conteneur">
+      <p class="surtitre" data-reveal>District autonome d’Abidjan</p>
+      <h2 data-reveal style="--delai:60ms">Les communes où nous livrons.</h2>
+      <div class="grille quatre zones" style="margin-top:36px">
+        {ZONES.map((z, i) => (
+          <a class="carte zone" href={`/livraison/${z.slug}/`} data-reveal style={`--delai:${(i % 4) * 70}ms`}>
+            <h3>{z.nom}</h3>
+            <p>{z.quartiers.slice(0, 3).join(', ')}…</p>
+            <span class="prix">{tarifTexte(z.tarif)}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section sombre">
+    <div class="raies" aria-hidden="true"><span class="epaisse"></span><span class="fine"></span></div>
+    <div class="conteneur deux-colonnes" style="align-items:start">
+      <div>
+        <p class="surtitre" data-reveal>Grand Abidjan</p>
+        <h2 data-reveal style="--delai:60ms">Autour d’Abidjan : pas encore.</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">
+          Nous ne livrons pas encore dans les communes et villes voisines du Grand Abidjan :
+          {ZONES_NON_DESSERVIES.join(', ')}. Les commandes vers ces zones ne sont pas encore possibles.
+        </p>
+      </div>
+      <div>
+        <p class="surtitre" data-reveal>Reste de la Côte d’Ivoire</p>
+        <h2 data-reveal style="--delai:60ms">Vous êtes hors d’Abidjan ?</h2>
+        <p class="chapeau" data-reveal style="--delai:120ms">
+          Pour l’instant, NAËLLYS EXPRESS livre uniquement dans le District d’Abidjan. Une entreprise ou une boutique en ligne
+          d’une autre ville peut toutefois nous confier ses livraisons à Abidjan. Écrivez-nous pour en parler.
+        </p>
+        <a class="bouton" href="/contact/" data-reveal style="--delai:180ms">Nous contacter <span class="fleche" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="conteneur">
+      <p class="surtitre" data-reveal>Une question ?</p>
+      <h2 data-reveal style="--delai:60ms">Votre adresse est desservie ?</h2>
+      <p class="chapeau" data-reveal style="--delai:120ms">
+        Appelez le <a href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a> ou écrivez-nous sur
+        <a href={`https://wa.me/${SOCIETE.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a> : nous vous répondons rapidement.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .zone { display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: transform 0.35s var(--courbe); }
+  .zone:hover { transform: translateY(-4px); }
+  .zone h3 { margin: 0 0 8px; }
+  .zone p { color: var(--muted); margin: 0 0 16px; flex: 1; }
+  .prix { font-family: var(--font-titre); font-weight: 800; color: var(--orange); }
+  .chapeau a { color: var(--orange); font-weight: 600; }
+</style>

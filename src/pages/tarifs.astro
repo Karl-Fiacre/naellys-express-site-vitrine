@@ -5,8 +5,8 @@ import { COMMUNES, OFFRES_ENTREPRISES, OFFRES_PARTICULIERS } from '../data/site'
 const fcfa = (n: number) => `${n.toLocaleString('fr-FR').replace(/ /g, ' ')} FCFA`;
 ---
 
-<Base titre="Tarifs" description="Tarifs NAËLLYS EXPRESS : 2 000 FCFA la course avec l'offre B2C, tarif par commune de 1 500 à 2 500 FCFA, formules entreprise Standard et Premium avec facture FNE.">
-  <EntetePage surtitre="Tarifs" titre="Des prix clairs,<br /><span class='accent'>affichés avant de commander.</span>" chapeau="Le prix de chaque course s’affiche dans l’application avant votre confirmation. Pas de frais cachés." />
+<Base titre="Tarifs" titreSeo="Tarifs de livraison à Abidjan : prix par commune — NAËLLYS EXPRESS" fil={[{ nom: 'Tarifs', url: '/tarifs/' }]} description="Tarifs NAËLLYS EXPRESS : 2 000 FCFA la course avec l'offre B2C, tarif par commune de 1 500 à 2 500 FCFA, formules entreprise Standard et Premium avec facture FNE.">
+  <EntetePage surtitre="Tarifs de livraison à Abidjan" titre="Des prix clairs,<br /><span class='accent'>affichés avant de commander.</span>" chapeau="Le prix de chaque course s’affiche dans l’application avant votre confirmation. Pas de frais cachés." />
 
   <section class="section">
     <div class="conteneur">

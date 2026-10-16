@@ -6,37 +6,84 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsApp from '../components/WhatsApp.astro';
-import { SOCIETE } from '../data/site';
+import { SOCIETE, COMMUNES } from '../data/site';
 
 interface Props {
   titre: string;
   description: string;
+  /** Titre complet de l'onglet et des résultats de recherche (sinon « titre — NAËLLYS EXPRESS »). */
+  titreSeo?: string;
+  /** Fil d'Ariane (données structurées), sans l'accueil. */
+  fil?: { nom: string; url: string }[];
+  /** Données structurées propres à la page (FAQ, service local…). */
+  jsonLd?: Record<string, unknown>[];
+  /** Page à ne pas indexer (404). */
+  noindex?: boolean;
 }
-const { titre, description } = Astro.props;
-const titreComplet = titre === SOCIETE.nom ? `${SOCIETE.nom} — Livraison de colis à moto à Abidjan` : `${titre} — ${SOCIETE.nom}`;
+const { titre, description, titreSeo, fil = [], jsonLd = [], noindex = false } = Astro.props;
+const titreComplet =
+  titreSeo ??
+  (titre === SOCIETE.nom ? `Livraison de colis à moto à Abidjan — ${SOCIETE.nom}` : `${titre} — ${SOCIETE.nom}`);
 const canonique = new URL(Astro.url.pathname, Astro.site);
-const donneesStructurees = {
-  '@context': 'https://schema.org',
+const SITE = 'https://naellys-express.com';
+// Fiche de l'entreprise (référencement local, 16/10/2026) : mêmes nom, adresse et téléphone que
+// sur Google Business Profile et les annuaires (cohérence exigée par les moteurs de recherche).
+const entreprise = {
   '@type': 'LocalBusiness',
+  '@id': `${SITE}/#entreprise`,
   name: SOCIETE.nom,
-  description: 'Livraison de colis à moto dans tout Abidjan.',
-  url: 'https://naellys-express.com',
+  legalName: `${SOCIETE.nom} ${SOCIETE.forme}`,
+  description:
+    'Entreprise de livraison de colis à moto à Abidjan : coursiers vérifiés, suivi en direct, remise sécurisée par code, offres pour particuliers, entreprises et partenaires.',
+  url: SITE,
+  logo: `${SITE}/images/logo.png`,
+  image: `${SITE}/images/coursier.jpg`,
   telephone: SOCIETE.telephoneE164,
   email: SOCIETE.email,
-  image: 'https://naellys-express.com/images/logo.png',
-  address: { '@type': 'PostalAddress', streetAddress: 'Yopougon Sable', addressLocality: 'Abidjan', addressCountry: 'CI' },
-  areaServed: 'Abidjan',
+  priceRange: '1 500 – 2 500 FCFA',
+  currenciesAccepted: 'XOF',
+  identifier: { '@type': 'PropertyValue', name: 'RCCM', value: SOCIETE.rccm },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Yopougon Sable',
+    addressLocality: 'Abidjan',
+    addressRegion: 'District autonome d’Abidjan',
+    addressCountry: 'CI',
+  },
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: 'District autonome d’Abidjan' },
+    ...COMMUNES.map((c) => ({ '@type': 'City', name: `${c.nom}, Abidjan` })),
+  ],
+  knowsAbout: ['Livraison de colis', 'Coursier à moto', 'Livraison express', 'Livraison e-commerce'],
+  sameAs: [`https://wa.me/${SOCIETE.whatsapp}`],
 };
+const ariane = fil.length
+  ? [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ nom: 'Accueil', url: '/' }, ...fil].map((e, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: e.nom,
+          item: new URL(e.url, SITE).toString(),
+        })),
+      },
+    ]
+  : [];
+const donneesStructurees = { '@context': 'https://schema.org', '@graph': [entreprise, ...ariane, ...jsonLd] };
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr-CI">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titreComplet}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonique} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="geo.region" content="CI-AB" />
+    <meta name="geo.placename" content="Abidjan" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="theme-color" content="#1b2a4a" />
     <meta property="og:type" content="website" />
@@ -44,6 +91,7 @@ const donneesStructurees = {
     <meta property="og:site_name" content={SOCIETE.nom} />
     <meta property="og:title" content={titreComplet} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonique} />
     <meta property="og:image" content="https://naellys-express.com/images/coursier.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json" set:html={JSON.stringify(donneesStructurees)} />

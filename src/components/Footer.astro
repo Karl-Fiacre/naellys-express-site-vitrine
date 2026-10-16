@@ -1,5 +1,6 @@
 ---
 import { SOCIETE } from '../data/site';
+import { ZONES } from '../data/zones';
 const annee = new Date().getFullYear();
 ---
 
@@ -29,6 +30,7 @@ const annee = new Date().getFullYear();
       <a href="/entreprises/">Entreprises</a>
       <a href="/partenaires/">Partenaires</a>
       <a href="/tarifs/">Tarifs</a>
+      <a href="/zones-desservies/">Zones desservies</a>
     </nav>
     <nav aria-label="NAËLLYS EXPRESS">
       <h3>NAËLLYS EXPRESS</h3>
@@ -46,6 +48,11 @@ const annee = new Date().getFullYear();
       <p>{SOCIETE.siege}</p>
     </div>
   </div>
+
+  <nav class="conteneur communes" aria-label="Livraison par commune">
+    <h3>Livraison à Abidjan</h3>
+    <div>{ZONES.map((z) => <a href={`/livraison/${z.slug}/`}>Livraison {z.a}</a>)}</div>
+  </nav>
 
   <div class="conteneur bas">
     <p>© {annee} {SOCIETE.nom} — {SOCIETE.forme} au capital de {SOCIETE.capital} · RCCM {SOCIETE.rccm} · CC {SOCIETE.contribuable}</p>
@@ -70,6 +77,8 @@ const annee = new Date().getFullYear();
   .pied nav, .contact { display: flex; flex-direction: column; gap: 10px; }
   .pied nav a, .contact a { color: var(--on-navy-muted); text-decoration: none; width: fit-content; background: linear-gradient(var(--orange), var(--orange)) left bottom / 0 2px no-repeat; transition: color 0.3s, background-size 0.4s var(--courbe); }
   .pied nav a:hover, .contact a:hover { color: #fff; background-size: 100% 2px; }
+  .pied .communes { position: relative; padding-bottom: 40px; }
+  .communes div { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 0.9rem; }
   .bas { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-block: 24px; border-top: 1px solid rgb(255 255 255 / 0.08); font-size: 0.85rem; }
   .bas p { margin: 0; }
   .haut { width: 48px; height: 48px; flex: none; border-radius: 50%; border: 0; background: var(--orange); color: #fff; font-size: 1.2rem; cursor: pointer; transition: transform 0.4s var(--courbe); }

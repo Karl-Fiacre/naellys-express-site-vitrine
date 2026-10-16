@@ -11,6 +11,13 @@ const PRECHARGEMENT = /prefetch|prerender/i;
 
 export default {
   async fetch(request, env, ctx) {
+    // Une seule adresse pour les moteurs de recherche : www.naellys-express.com renvoie
+    // définitivement (301) vers naellys-express.com, en gardant la page demandée.
+    const adresse = new URL(request.url);
+    if (adresse.hostname === 'www.naellys-express.com') {
+      adresse.hostname = 'naellys-express.com';
+      return Response.redirect(adresse.toString(), 301);
+    }
     const reponse = await env.ASSETS.fetch(request);
     const type = reponse.headers.get('content-type') ?? '';
     const prechargement = PRECHARGEMENT.test(`${request.headers.get('sec-purpose') ?? ''} ${request.headers.get('purpose') ?? ''}`);
