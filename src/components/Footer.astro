@@ -1,5 +1,5 @@
 ---
-import { SOCIETE } from '../data/site';
+import { CONCEPTEUR, SOCIETE } from '../data/site';
 import { ZONES } from '../data/zones';
 const annee = new Date().getFullYear();
 ---
@@ -37,7 +37,6 @@ const annee = new Date().getFullYear();
       <a href="/devenir-livreur/">Devenir livreur</a>
       <a href="/faq/">Questions fréquentes</a>
       <a href="/contact/">Contact</a>
-      <a href="/mentions-legales/">Mentions légales</a>
       <a href="/cgu/">CGU</a>
       <a href={`${SOCIETE.backOffice}/confidentialite`}>Confidentialité</a>
     </nav>
@@ -53,6 +52,11 @@ const annee = new Date().getFullYear();
     <h3>Livraison à Abidjan</h3>
     <div>{ZONES.map((z) => <a href={`/livraison/${z.slug}/`}>Livraison {z.a}</a>)}</div>
   </nav>
+
+  <div class="conteneur credit">
+    <img src={CONCEPTEUR.logo} alt={`${CONCEPTEUR.nom} — ${CONCEPTEUR.raison}`} width="60" height="60" loading="lazy" />
+    <p>Site, application et back-office conçus et réalisés par <strong>{CONCEPTEUR.nom}</strong> — {CONCEPTEUR.raison}.</p>
+  </div>
 
   <div class="conteneur bas">
     <p>© {annee} {SOCIETE.nom} — {SOCIETE.forme} au capital de {SOCIETE.capital} · RCCM {SOCIETE.rccm} · CC {SOCIETE.contribuable}</p>
@@ -79,6 +83,10 @@ const annee = new Date().getFullYear();
   .pied nav a:hover, .contact a:hover { color: #fff; background-size: 100% 2px; }
   .pied .communes { position: relative; padding-bottom: 40px; }
   .communes div { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 0.9rem; }
+  .credit { position: relative; display: flex; align-items: center; gap: 14px; padding-bottom: 24px; font-size: 0.9rem; }
+  .credit img { width: 60px; height: 60px; flex: none; object-fit: contain; background: #fff; border-radius: 14px; padding: 4px; }
+  .credit p { margin: 0; }
+  .credit strong { color: #fff; }
   .bas { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-block: 24px; border-top: 1px solid rgb(255 255 255 / 0.08); font-size: 0.85rem; }
   .bas p { margin: 0; }
   .haut { width: 48px; height: 48px; flex: none; border-radius: 50%; border: 0; background: var(--orange); color: #fff; font-size: 1.2rem; cursor: pointer; transition: transform 0.4s var(--courbe); }

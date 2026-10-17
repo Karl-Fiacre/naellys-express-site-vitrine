@@ -13,7 +13,6 @@ const PAGES: [string, string][] = [
   ['devenir-livreur/', '0.7'],
   ['faq/', '0.7'],
   ['contact/', '0.7'],
-  ['mentions-legales/', '0.3'],
   ['cgu/', '0.3'],
 ];
 // Date de la construction du site : chaque mise en ligne actualise la date de modification.

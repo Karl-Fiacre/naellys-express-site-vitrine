@@ -19,6 +19,13 @@ export const SOCIETE = {
   backOffice: 'https://admin.naellys-express.com',
 };
 
+/** Conception et réalisation du site, de l'application et du back-office (17/10/2026). */
+export const CONCEPTEUR = {
+  nom: 'Nguessan-IT',
+  raison: 'Nguessan Solutions Informatiques',
+  logo: '/images/nguessan-it.png',
+};
+
 /** Fonction serveur qui enregistre les demandes du site dans le back-office (sans clé côté site). */
 export const URL_DEMANDES = 'https://hyaxvynyisgmamfdadur.supabase.co/functions/v1/recevoirDemandeSite';
 

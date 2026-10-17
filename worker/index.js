@@ -18,6 +18,10 @@ export default {
       adresse.hostname = 'naellys-express.com';
       return Response.redirect(adresse.toString(), 301);
     }
+    // Mentions légales (17/10/2026) : regroupées en fin de CGU ; l'ancienne adresse y renvoie.
+    if (adresse.pathname === '/mentions-legales' || adresse.pathname === '/mentions-legales/') {
+      return Response.redirect(`${adresse.origin}/cgu/#informations-legales`, 301);
+    }
     const reponse = await env.ASSETS.fetch(request);
     const type = reponse.headers.get('content-type') ?? '';
     const prechargement = PRECHARGEMENT.test(`${request.headers.get('sec-purpose') ?? ''} ${request.headers.get('purpose') ?? ''}`);
