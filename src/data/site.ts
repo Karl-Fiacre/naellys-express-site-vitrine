@@ -2,6 +2,8 @@
 // communes desservies, FAQ. Mêmes valeurs que l'application et le back-office
 // (dépôt naellys-express : offres, coverage_zones, parametres_societe) — à tenir à jour ensemble.
 
+// Mentions de la société (forme, capital, RCCM, CC, dirigeant) : jamais affichées sur le site,
+// à la demande de NAËLLYS EXPRESS (17/10/2026). Gardées ici pour mémoire seulement.
 export const SOCIETE = {
   nom: 'NAËLLYS EXPRESS',
   forme: 'SARL',

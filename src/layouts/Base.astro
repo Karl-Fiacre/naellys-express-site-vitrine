@@ -32,7 +32,6 @@ const entreprise = {
   '@type': 'LocalBusiness',
   '@id': `${SITE}/#entreprise`,
   name: SOCIETE.nom,
-  legalName: `${SOCIETE.nom} ${SOCIETE.forme}`,
   description:
     'Entreprise de livraison de colis à moto à Abidjan : coursiers vérifiés, suivi en direct, remise sécurisée par code, offres pour particuliers, entreprises et partenaires.',
   url: SITE,
@@ -42,7 +41,6 @@ const entreprise = {
   email: SOCIETE.email,
   priceRange: '1 500 – 2 500 FCFA',
   currenciesAccepted: 'XOF',
-  identifier: { '@type': 'PropertyValue', name: 'RCCM', value: SOCIETE.rccm },
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Yopougon Sable',

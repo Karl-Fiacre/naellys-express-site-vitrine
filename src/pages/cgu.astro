@@ -19,9 +19,8 @@ import { CONCEPTEUR, SOCIETE } from '../data/site';
       ))}
       <h2 id="informations-legales">Informations légales du site</h2>
       <p>
-        <strong>Éditeur</strong> : {SOCIETE.nom}, {SOCIETE.forme} au capital de {SOCIETE.capital} — RCCM {SOCIETE.rccm} — compte
-        contribuable {SOCIETE.contribuable} — siège : {SOCIETE.siege} — <a href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a> —
-        <a href={`mailto:${SOCIETE.email}`}>{SOCIETE.email}</a>. Directeur de la publication : {SOCIETE.dirigeant}, {SOCIETE.qualite}.
+        <strong>Éditeur</strong> : {SOCIETE.nom} — {SOCIETE.siege} — <a href={`tel:${SOCIETE.telephoneE164}`}>{SOCIETE.telephone}</a> —
+        <a href={`mailto:${SOCIETE.email}`}>{SOCIETE.email}</a>.
       </p>
       <p>
         <strong>Conception et réalisation</strong> : {CONCEPTEUR.nom} ({CONCEPTEUR.raison}) — site, application et back-office.

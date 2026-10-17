@@ -57,7 +57,7 @@ export const CGU: { titre: string; paragraphes?: string[]; points?: string[] }[]
   {
     titre: '',
     paragraphes: [
-      `Les présentes conditions générales d’utilisation (« CGU ») régissent l’utilisation de l’application NAËLLYS EXPRESS et du service de livraison à moto proposé par ${SOCIETE.nom} ${SOCIETE.forme} (« NAËLLYS EXPRESS ») dans le District d’Abidjan. En créant un compte ou en utilisant l’application, vous acceptez les présentes CGU.`,
+      `Les présentes conditions générales d’utilisation (« CGU ») régissent l’utilisation de l’application NAËLLYS EXPRESS et du service de livraison à moto proposé par ${SOCIETE.nom} (« NAËLLYS EXPRESS ») dans le District d’Abidjan. En créant un compte ou en utilisant l’application, vous acceptez les présentes CGU.`,
     ],
   },
   {
@@ -166,6 +166,6 @@ export const CGU: { titre: string; paragraphes?: string[]; points?: string[] }[]
   },
   {
     titre: '16. Contact',
-    paragraphes: [`${SOCIETE.nom} ${SOCIETE.forme}, ${SOCIETE.siege}. Téléphone : ${SOCIETE.telephone}. Email : ${SOCIETE.email}.`],
+    paragraphes: [`${SOCIETE.nom}, ${SOCIETE.siege}. Téléphone : ${SOCIETE.telephone}. Email : ${SOCIETE.email}.`],
   },
 ];
